@@ -1,0 +1,14 @@
+1. Download Eclipse, Eclipse Juno (4.2) SR1 Packages
+   #wget http://eclipse.stu.edu.tw/technology/epp/downloads/release/juno/SR1/eclipse-jee-juno-SR1-linux-gtk.tar.gz
+
+2. sudo tar xvzf eclipse-jee-juno-SR1-linux-gtk.tar.gz -C /opt
+
+3. 為Eclipse建立桌面捷徑
+   3.1. 於桌面空白處按鼠標右鍵，選擇[Create Launcher]
+   3.2. 於[Create Launcher]對話框中，填入以下資訊：
+           Type: [Application]
+           Name: [Eclipse]
+        Command: [/opt/eclipse/eclipse]
+   3.3. 點擊[Create Launcher]對話框左上方的圖示，會彈出[選擇圖示]的對話框，
+        於安裝eclipse的目錄中找到icon.xpm，點選後按下[Open]後，
+        在[Create Launcher]對話框中按下[OK]，桌面捷徑即建立完成。
