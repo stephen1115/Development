@@ -1,0 +1,64 @@
+Linux系統上的JAVA環境建置與管理
+
+┌　┬　┐　└　┴　┘　├　┼　┤　─　│
+
+1. 首先，將身份切換為root，再確認目前系統上的JAVA版本 (CentOS 6.5 預設環境)
+   ┌───────────────────────────────────────────────────────────────────────────┐
+   │ user@localhost ~ # java -version                                          │
+ 　│ java version "1.7.0_45"                                                   │
+   │ OpenJDK Runtime Environment (rhel-2.4.3.4.el6_5-x86_64 u45-b15)           │
+   │ OpenJDK 64-Bit Server VM (build 24.45-b08, mixed mode)                    │
+　 └───────────────────────────────────────────────────────────────────────────┘
+                                                                              
+2. download JDK
+   到Oracle官網下載官方版本，JDK7
+   ┌───────────────────────────────────────────────────────────────────────────┐
+   │ user@localhost ~ # wget http://www.oracle.com/technetwork/java/javase/    │
+   │                    downloads/jdk7-downloads-1880260.html                  │
+　 └───────────────────────────────────────────────────────────────────────────┘
+
+3. Install JDK
+   ┌────────────────────────────────────────────────────────────────────────────────┐
+   │ user@localhost ~ # sudo tar zxvf ./jdk-7u15-linux-i586.tar.gz  -C /usr/lib/jvm │ 
+   │ user@localhost ~ # cd /usr/lib/jvm                                             │ 
+   │ user@localhost ~ # sudo mv jdk1.7.0/ java-7-sun                                │
+　 └────────────────────────────────────────────────────────────────────────────────┘
+
+3. Update /etc/profile
+   ┌───────────────────────────────────────────────────────────────────────────┐
+   │ user@localhost ~ # vim /etc/profile                                       │
+   │     export JAVA_HOME=/usr/lib/jvm/java-7-sun                              │
+   │     export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib                   │
+   │     export PATH=${JAVA_HOME}/bin:$PATH                                    │
+   │                                                                           │
+   │ user@localhost ~ # source ~/.bashrc                                       │
+　 └───────────────────────────────────────────────────────────────────────────┘
+                                                                               
+4. Set Default JAVA version
+   4.1. 執行以下指令，確認目前系統有哪些JDK版本
+        sudo update-alternatives --config java
+        ====== 以下為執行的可能結果，若系統上沒有任何的JDK版本則不會顯示任何結果 ======
+        There are 2 choices for the alternative java (providing /usr/bin/java).
+        Selection Path Priority Status
+        ————————————————————
+        * 0 /usr/lib/jvm/java-6-openjdk/jre/bin/java 1061 auto mode
+        1 /usr/lib/jvm/java-6-openjdk/jre/bin/java 1061 manual mode
+        2 /usr/lib/jvm/java-6-sun/jre/bin/java 63 manual mode
+        Press enter to keep the current choice[*], or type selection number:
+        ===============================================================================
+
+        “2” 為我們想要設成預設使用的JDK版本，所以選擇“2”之後，按下Enter離開。
+   4.2. Setting jdk1.7.0 being default JAVA Compiler
+        sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-7-sun/bin/java 0
+                                                                                              ^^^
+        放“0”是因為目前系統上沒有任何JDK版本存在。若以上個步驟為例，如果需要再新增加一個JDK版本，
+        就只要把“0” 改成3即可，因為上個步驟的最後一個JDK版本排到“2”。
+   4.3. Setting JAVA runtime environment
+        sudo update-alternatives –config javac [Check the java compilers you have]
+        sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-7-sun/bin/javac 0  
+        sudo update-alternatives --install /usr/bin/jar jar /usr/lib/jvm/java-7-sun/bin/jar 0
+
+5. Test
+   到此，JDK的安裝就都已完成。可以執行以下命令來確認安裝。
+   # java -version
+
