@@ -1,0 +1,330 @@
+使用Mavin建置專案 筆記
+
+Maven 入門, 很完整
+http://code.google.com/p/javawiki/wiki/StarupMaven?wl=zh-Hant
+
+======|簡易說明|================================================================
+Apache Maven3 是一套專案建置及管理的工具，使用統一的script進行專案的建置。   
+
+Maven vs Ant
+Apache Ant 是過程式的專案建置工具；開發者需要在配置檔上指定每一個任務，每個任務必
+須明確指定source，及resouce的存儲位置，如何打包jar檔; 並且因為Ant不存在
+生命週期的概念，因此，開發者必須要明確指出任務與任務之間的依賴性，並且也要定義
+任務的執行順序和邏輯關係，所以在配置檔上會有大量的重覆代碼出現。
+
+Apache Maven 是專案的建置工具也是專案的管理工具；它有指定的專案目錄結構和生命週期，
+專案建置的各個階都有插件工具可以使用，開發者只需要按指定的目錄結構建立專案，
+於配置檔中配置專案生命週期的元素，Maven就會按配置檔的內容將整個專案建置出來，
+這樣的方式會大大減少配置檔中重覆的代碼。
+
++--------------------------------------------------------+
+| Maven產生的JAVA專案目錄結構                            |
++---------------------+----------------------------------+
+| src/main/java	      |   Application/Library sources    
+| src/main/resources  |   Application/Library resources
+| src/main/filters	  |   Resource filter files
+| src/main/assembly	  |   Assembly descriptors
+| src/main/config	  |   Configuration files
+| src/main/scripts	  |   Application/Library scripts
+| src/main/webapp	  |   Web application sources
+| src/test/java	      |   Test sources
+| src/test/resources  |   Test resources
+| src/test/filters	  |   Test resource filter files
+| src/site	          |   Site
+| LICENSE.txt	      |   Project's license
+| README.txt	      |   Project's readme
++---------------------+----------------------------------+
+
+======|Maven的安裝和配置|=======================================================
+1. 下載Maven
+   http://maven.apache.org/download.cgi
+
+2. 配置環境變數
+   Linux/Mac OSX - .bash_profile
+       export M2_HOME={Maven 安裝路徑}
+       export M2=$M2_HOME/bin
+       export PATH=$M2：$PATH
+   Windows -
+       於系統環境變數中定義
+
+3. 驗證安裝是否成功
+   +---------------------------------------------------------------------------+
+   | [root@local ~]$ mvn --version
+   | Apache Maven 3.1.1 (0728685237757ffbf44136acec0402957f723d9a; 
+   | 2013-09-17 08：22：22-0700)
+   | Maven home： /home/stephen/VMshare/Lab/apache-maven-3.1.1
+   | Java version： 1.7.0_17, vendor： Oracle Corporation
+   | Java home： /usr/lib/jvm/java-7-sun/jre
+   | Default locale： en_US, platform encoding： UTF-8
+   | OS name： "linux", version： "2.6.32-279.el6.i686", 
+   | arch： "i386", family： "unix"
+   +---------------------------------------------------------------------------+
+
+4. 調整Maven default local repository 位置
+   [說明]
+   Maven的local repository主要用來存放專案使用到dependencies，
+   例如： 專案中會使用到的jar files，或是任何由Maven所下載回來的檔案，
+   所以也就是說，Maven所建立的專案，使用到的所有dependency
+   都會被存放到local repository
+
+   Maven的local repository 預設目錄名稱為 .m2
+   路徑
+       Linux/Mac OSX - ~/.m2
+       Windows       - C：\Documents and Settings\{user name}\.m2
+   
+   由於Maven預設的路徑並不是那麼容易找到，所以，建議可以修改local repository的
+   存放位置
+   a. 找到 {M2_HOME}\conf\setting.xml
+   +-------------------------------------------------------------------------+
+   | {M2_HOME}\conf\setting.xml                                              |
+   +-------------------------------------------------------------------------+
+   | <settings>                                                              |
+   |   <!-- localRepository                                                  |
+   |    | The path to the local repository maven will use to store artifacts.|
+   |    |                                                                    |
+   |    | Default： ~/.m2/repository                                         |
+   |   <localRepository>/path/to/local/repo</localRepository>                |
+   |   -->                                                                   |
+   |                                                                         |
+   | <localRepository>D：/maven_repo</localRepository>                       |
+   +-------------------------------------------------------------------------+ 
+   b. Saved it.
+
+======|Maven Central Repository|================================================
+當使用Maven建立專案時，Maven 會檢查 pom.xml，用以確認哪些dependency需要下載
+Maven首先會先從local repository搜尋dependency，若是沒有找到，Maven會連線到
+預設的Maven central repository - http://repo1.maven.org/maven2/
+
+並不是所有的Library都會放在Central Repository，所以，以下記錄一些常用的
+Repository
++------------------+-------------------------------------------+
+| repo2            | http://repo2.maven.org/maven2 
+| javanet          | http://download.java.net/maven/2 
+| springframework  | http://maven.springframework.org/release
+| jboss            | http://repository.jboss.com/maven2
++------------------+-------------------------------------------+
+
+======|POM 配置說明|============================================================
+Maven為了希望做到專案建立的標準化，便利用Metadata的描述方式來描述
+共通的目錄結構及共通的建置流程，POM(Project Object Model)於是乎形成.
+POM 可以看成是將"專案"當成是一個物件來看待，一個Project的物件可以使用getXXX()方法
+來取得所需的資訊. POM被抽象化出來的實體檔案名為pom.xml，該檔以XML為資訊的保存方方.
+POM中包含了許多的資訊，例如：
+1. 專案名稱(artifactId)
+2. 專案版本
+3. 專案相依的JARs
+4. Maven Plugin
+
+每一個pom.xml均是以project為根節點，而一個基本的pom.xml需要包括以下以項資訊 --
+modelVersion -
+    因為POM經過多個版本的演進，開發者可以選用自己需要的版本，只要明確指出版本，
+    Maven即可以做validation的動作.
+groupId
+    專案的package起始的位置
+artifactId
+    專案名稱
+version
+    專案的版本號
+例如：
++------|範例|----------------------------+
+| <project>                              |
+|   <modelVersion>4.0.0</modelVersion>   |
+|   <groupId>com.company.myapp</groupId> |
+|   <artifactId>my-App</artifactId>      |
+|   <version>0.1</version>               |
+| </project>                             |
++----------------------------------------+
+
+另外，Maven也存在一個Super POM，就像每個Java Class一定會繼承java.lang.Object一樣
+在Super POM中包含了一些必要的Maven Plugin設定和相關的JARs URL. Super POM中，
+對開發者來說就是檔案的目錄結構，也就是檔放存放的位置：
+以下為預設的配置 --
+原始碼目錄(sourceDirectory)：${專案起始位置}/src/main/java
+測試原始碼目錄(scriptSourceDirectory)：${專案起始位置}/src/test/java
+資源檔案目錄(resource)：${專案起始位置}/src/main/resources
+測試資源檔案目錄(testResource)：${專案起始位置}/src/test/resources
+
+======|使用Maven建置專案|=======================================================
+在使用Maven建置專案之前, 需要先了解 archetype。archetype是Maven中用來描述專案結構
+的plugin。archetype的功能如同範本或樣版一般。archetype可以建置一個最基本的Java專
+案，也可以建置例如：Struts2專案或Wicket專案。或是其他有提供archetype plugin的
+Open Source專案。
+不同的archetype均有事先準備好的pom.xml且內含專案必要使用的JARs的相依資訊，
+因此archetype會依需求建置合適的目錄及專案的pom.xml。也可以於專案建置後再自行填寫
+需要的JARs相依性資訊。
+    ------|建立一個基本的Jave專案|------------------
+    mvn archetype:generate
+      -DgroupId=foo.bar.app
+      -DartifactId=hello-world
+      -DarchetypeArtifactId=maven-archetype-quickstart
+      -DinteractiveMode=false
+    ------|產生的目錄結構如下|----------------------
+      HELLO-WORLD
+      └─src
+          ├─main
+          │  └─java
+          │      └─foo
+          │          └─bar
+          │              └─app
+          └─test
+              └─java
+                  └─foo
+                      └─bar
+                          └─app
+    ------------------------------------------------
+    於main/java/foo/bar/app會有一個App.java, 其package會是groupId
+    於test/java/foo/bar/app/AppTest.java會有相對應的TestCase
+    而最重要的是在src這個目錄下會有pom.xml
+    +--------------------------------------------------------------------------+
+    |  <project xmlns="http://maven.apache.org/POM/4.0.0" 
+    |   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    |   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+    |                       http://maven.apache.org/maven-v4_0_0.xsd">
+    |    <modelVersion>4.0.0</modelVersion>
+    |    <groupId>foo.bar.app</groupId>
+    |    <artifactId>hello-world</artifactId>
+    |    <packaging>jar</packaging>
+    |    <version>1.0-SNAPSHOT</version>
+    |    <name>hello-world</name>
+    |    <url>http://maven.apache.org</url>
+    |    <dependencies>
+    |      <dependency>
+    |        <groupId>junit</groupId>
+    |        <artifactId>junit</artifactId>
+    |        <version>3.8.1</version>
+    |        <scope>test</scope>
+    |      </dependency>
+    |    </dependencies>
+    |  </project>
+    +--------------------------------------------------------------------------+
+    上述pom.xml中，相依性的描述只有junit，並且註記scope為test。開發者可以增加其他
+    的<dependency>標籤來引用其他的JARs檔案。
+
+    ------|編譯和打包程式|------------------------------------------------------
+    1. 編譯程式
+       mvn compile
+    2. 打包JARs檔
+       mvn package
+       2.1. 從螢幕跑出來的訊息中，我們可以看到以下資訊
+            [INFO] [jar:jar]
+            [INFO] Building jar: C:\temp\hello-world\target\hello-world-1.0-SNAPSHOT.jar
+            代表 JAR 檔存放的位置
+       2.2. 一閃而過的訊息中，有一些被中括號標視的文字：
+            [resources:resources]
+            [compiler:compile]
+            [resources:testResources]
+            [compiler:testCompile]
+            [surefire:test]
+            [jar:jar]
+            這些是執行 package 需要經歷的處理程序。
+            Maven 定義了標準化的 build lifecycle 
+            http://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#Lifecycle_Reference
+            在每一個建構的階段可以綁定特定的 Maven Plugin，以上這些 [....] 內
+            的描述，就是 Maven Plugin。
+            如果您可以接受 Design Pattern 內的 Template Method 的概念，
+            Maven Build Lifecycle 就是提供了一個完整地建構 Template。
+            並開放每一個 Build Phase 能夠掛入新的 Hook Method，在 Maven 內
+            這些 Hook Method 就是 Maven Plugin。
+            
+            我們可以使用 maven 與 plugin 名稱查出他們的網站，通常它們都會指名綁定
+            在什麼建構階段。
+            以 resources:resources 為例：
+            http://maven.apache.org/plugins/maven-resources-plugin/resources-mojo.html
+            
+      
+======|Maven常用命令|===========================================================
+  ------|編譯程式|--------------------------
+  mvn compile
+  ------------------------------------------
+
+  ------|打包JAR檔|-------------------------
+  mvn package
+  [說明]
+  ------------------------------------------
+
+  編譯並執行專案內的 TestCase
+  mvn test
+  
+  清除專案建立的檔案 (通常是指 target 目錄)
+  mvn clean
+  
+  將專案引用的 JARs 複製至 target/dependency 目錄
+  mvn dependency:copy-dependencies
+  
+  顯示實際作用的 pom.xml (即 pom.xml 與 Super POM 預設值合併的結果)
+  mvn help:effective-pom
+  
+  刪除本地端所使用的 JARs，由 Reposiotry 重新下載相依的 Artifact
+  mvn dependency:purge-local-repository 
+
+  自行定義Maven Archetype
+  http://kenchen0716.blogspot.tw/2012/12/maven-archetype.html
+  Maven3: How to Use Archetype to Generate Project Frame/Skeleton
+  http://rritw.com/a/bianchengyuyan/C__/20130429/348985.html
+  使用 Maven 建立自己的 archetype
+  http://tedmyblog.blogspot.tw/2008/09/maven-archetype.html
+  Apache Maven(Project Management)備忘記
+  http://joeyta.blogspot.tw/2006/07/apache-mavenproject-management.html
+  使用 Maven 建立自己的 archetyp
+  http://www.360doc.com/content/09/0518/17/7147_3553467.shtml
+
+-----------------------------------------------------------------------------------
+Maven 入門(4) - 認識 repository
+http://www.javaworld.com.tw/jute/post/view?bid=11&id=236532&sty=3
+講古的時間 Apache Maven
+http://www.codedata.com.tw/java/understanding-gradle-2-maven/
+Maven 入門(3) - 描述相依關係與常用 Plugin 介紹
+http://www.javaworld.com.tw/jute/post/view?bid=11&id=236496&sty=3
+Maven 使用指南(2): 第一个例子Hello World
+http://www.imobilebbs.com/wordpress/archives/tag/maven/page/2
+
+maven 配置篇 之pom.xml(一）
+http://zyl.iteye.com/blog/41754
+
+
+
++------------------------------------------------------------------------------+
+| <project xmlns="http://maven.apache.org/POM/4.0.0"
+   xmlns：xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi：schemaLocation="http://maven.apache.org/POM/4.0.0 
+                       http://maven.apache.org/maven-v4_0_0.xsd"> 
+   <modelVersion>4.0.0</modelVersion> 
+   
+   <! – The Basics – > 
+   <groupId> … </groupId> 
+   <artifactId> … </artifactId> 
+   <version> … </version> 
+   <packaging> … </packaging> 
+   <dependencies> … </dependencies> 
+   <parent> … </parent> 
+   <dependencyManagement> … </dependencyManagement> 
+   <modules> … </modules> 
+   <properties> … </properties> 
+  
+   <! – Build Settings – > 
+   <build> … </build> 
+   <reporting> … </reporting> 
+  
+   <! – More Project Information – > 
+   <name> … </name> 
+   <description> … </description> 
+   <url> … </url> 
+   <inceptionYear> … </inceptionYear> 
+   <licenses> … </licenses> 
+   <organization> … </organization> 
+   <developers> … </developers> 
+   <contributors> … </contributors> 
+  
+   <! – Environment Settings – > 
+   <issueManagement> … </issueManagement> 
+   <ciManagement> … </ciManagement> 
+   <mailingLists> … </mailingLists> 
+   <scm> … </scm> 
+   <prerequisites> … </prerequisites> 
+   <repositories> … </repositories> 
+   <pluginRepositories> … </pluginRepositories> 
+   <distributionManagement> … </distributionManagement> 
+   <profiles> … </profiles> 
+  </project>
++------------------------------------------------------------------------------+
+

@@ -1,0 +1,165 @@
+CentOS 系統上安裝MongoDB 筆記
+
+1. 下載MongoDB
+   +----------
+   | [stephen@localhost ~]# wget http://fastdl.mongodb.org/linux/mongodb-linux-i686-2.4.6.tgz
+   +----------
+
+2. 建立MongoDB 使用者
+   +------------------------------------------------+
+   | [root@localhost ~]# groupadd mongodb           |
+   | [root@localhost ~]# useradd mongodb -g mongodb |
+   | [root@localhost ~]# passwd mongodb             |
+   +------------------------------------------------+
+   為方便起見, 也可以將mongodb加入sudoer
+
+2. 安裝MongoDB
+   +------------------------------------------------------------------------------+
+   | [mongodb@localhost ~]$ tar -xzvf mongodb-linux-i686-2.4.6.tgz                |
+   | [mongodb@localhost ~]$ sudo mv mongodb-linux-i686-2.4.6 mongod               |
+   | [mongodb@localhost ~]$cd /usr/local                                          |
+   | [mongodb@localhost local]$ sudo ln -s /usr/local/mongo/bin/* /usr/local/bin/ |
+   | [mongodb@localhost local]$ mkdir -p /mkdir /data                             |
+   | [mongodb@localhost data]$ cd /data                                           |
+   | [mongodb@localhost data]$ mkdir database log                                 |
+   +------------------------------------------------------------------------------+
+
+3. 啟動MongoDB
+   +------------------------------------------------------------------------------+
+   | [mongodb@localhost local]$ /usr/local/mongodb/bin/mongod                     |
+   |                            --dbpath=/usr/local/mongodb/data/database/        |
+   |                            --logpath=/usr/local/mongodb/data/log/mongodb.log |
+   |                            --logappend --fork --journal &                    |
+   | [1] 2717                                                                     |
+   | [mongodb@localhost mongodb]$ about to fork child process, waiting until      |
+   | server is ready for connections.                                             |
+   | forked process: 2719                                                         |
+   | all output going to: /usr/local/mongodb/data/log/mongodb.log                 |
+   | child process started successfully, parent exiting                           |
+   +------|透過配置檔啟動MongoDB|-------------------------------------------------+
+   | mongodb 除了上述啟動方式, 還可以透過配置檔來啟動, 就不用手key一大堆參數了
+   | 在/usr/local/mongodb/底下可以直接新建一個配置檔, mongodb.conf, 內容如下:
+   | 
+   | # 指定Port號，若不指定則default 27017 
+   | # port=10001
+   | # 資料庫檔案路徑
+   | dbpath=/usr/local/mongodb/data/database
+   | # 系統日誌檔路徑
+   | logpath=/usr/local/mongodb/data/log/mongodb.log
+   | # 日誌檔是用append的方式增加資料, 而不是用覆蓋的方式
+   | logappend=true
+   | 啟動戶式如下:
+   | [mongodb@localhost mongodb]$ ./bin/mongod -f mongodb.conf 
+   | all output going to: /log/mongodb.log
+   | 
+   |
+
+   MongoDB 預設使用的Port 號為 27017
+   常用參數說明:
+   --logappend  | 由系統日誌的檔尾開始添加新的日誌資料 
+   --fork       | 以背景方式執行MongoDB
+   --journal    | 資料庫異常關閉修復(32 bit版本不提供此功能) 
+   --dbpath     | 資料庫檔案存放路徑
+   --logpath    | 系統日誌檔案存放路徑
+   --master     | 指定為Master主機
+   --slave      | 指定為slave主機
+   --source     | 指定主機server的IP地址
+   --oplogSize  | 指定日誌檔案大小不能超過64MB
+                | 因為resync時操作量會很大且耗時, 最好透過設定一個足夠大的
+                | oplogSize來避免resync(default的oplog大小是剩餘磁碟空間的5%)
+   --port       | 指定啟用的Port號
+   --only       | 指定只複製哪一個資料庫
+   --slavedelay | 
+   --auth       | 是否需要驗證登入者(帳號/密碼)
+   
+   確認MongoDB Process是否有啟動
+   +-----
+   | [mongodb@localhost local]$ netstat -lanp | grep "27017"
+   | (Not all processes could be identified, non-owned process info
+   |  will not be shown, you would have to be root to see it all.)
+   | tcp        0      0 0.0.0.0:27017               0.0.0.0:*                   LISTEN      9348/mongod         
+   | tcp        0      0 127.0.0.1:54118             127.0.0.1:27017             TIME_WAIT   -                   
+   | unix  2      [ ACC ]     STREAM     LISTENING     658877 9348/mongod         /tmp/mongodb-27017.sock
+   | 或
+   | [mongodb@localhost local]$ netstat -ntlp
+   | (Not all processes could be identified, non-owned process info
+   |  will not be shown, you would have to be root to see it all.)
+   | Active Internet connections (only servers)
+   | Proto Recv-Q Send-Q Local Address               Foreign Address             State       PID/Program name   
+   | tcp        0      0 0.0.0.0:27017               0.0.0.0:*                   LISTEN      9348/mongod         
+   | tcp        0      0 0.0.0.0:3306                0.0.0.0:*                   LISTEN      -                   
+   | tcp        0      0 0.0.0.0:28017               0.0.0.0:*                   LISTEN      9348/mongod         
+   | tcp        0      0 0.0.0.0:22                  0.0.0.0:*                   LISTEN      -                   
+   | tcp        0      0 127.0.0.1:25                0.0.0.0:*                   LISTEN      -                   
+   | tcp        0      0 :::22                       :::*                        LISTEN      -                   
+   | tcp        0      0 ::1:25                      :::*                        LISTEN      -                   
+   | [mongodb@localhost bin]$ 
+   +-----
+   
+4. 啟動MongoDB 客戶端
+   +-------------------------------------------------------------------------------------------+
+   | [mongodb@localhost local]$ /usr/local/mongodb/bin/mongo localhost:27017                   |
+   +------|成功後會出現以下訊息|---------------------------------------------------------------+
+   | MongoDB shell version: 2.4.6                                                              |
+   | connecting to: localhost:27017/test
+   | Welcome to the MongoDB shell.
+   | For interactive help, type "help".
+   | For more comprehensive documentation, see
+   | 	http://docs.mongodb.org/
+   | Questions? Try the support group
+   | 	http://groups.google.com/group/mongodb-user
+   | Server has startup warnings: 
+   | Thu Sep 12 05:27:53.021 [initandlisten] 
+   | Thu Sep 12 05:27:53.021 [initandlisten] ** NOTE: This is a 32 bit MongoDB binary.
+   | Thu Sep 12 05:27:53.021 [initandlisten] **       32 bit builds are limited 
+   |                                                  to less than 2GB of data 
+   |                                                  (or less with --journal).
+   | Thu Sep 12 05:27:53.022 [initandlisten] **       Note that journaling 
+   |                                                  defaults to off for 32 bit
+   |                                                  and is currently off.
+   | Thu Sep 12 05:27:53.022 [initandlisten] **       See http://dochub.mongodb.org/core/32bit
+   | Thu Sep 12 05:27:53.022 [initandlisten] 
+   | > 
+   +-------------------------------------------------------------------------------------------+
+
+5. 測試MongoDB
+   +------|進入MongoDB Shell|-----------------------------------------------------+
+   | [mongodb@localhost local]$ /usr/local/mongodb/bin/mongo localhost:27017      | 
+   +------|停止MongoDB|-----------------------------------------------------------+
+   | > use admin;  <== 切換至admin DB, 某些命今必須切換至admin DB才能執行          |
+   | > db.shutdownServer();
+   | 或
+   | [mongodb@localhost local]$ /usr/local/mongodb/bin/mongod 
+   |                            --shutdown 
+   |                            --dbpath=/usr/local/mongodb/data/database/
+   |
+   | 注意: 不要直接使用kill -9來刪除mongodb Process，會造成資料庫資料遺失, 
+   |       萬一有發生資料遺失, 造成mongodb無法啟動的情況, 可以試著執行以下命令修復
+   | [mongodb@localhost local]$ /usr/local/mongodb/bin/mongod 
+   |                            --dbpath=/usr/local/mongodb/data/database/ 
+   |                            --repair  
+   +------|查詢資料庫列表|--------------------------------------------------------+
+   | > show dbs;                                                                  |
+   +------|查詢資料庫狀態|--------------------------------------------------------+
+   | > db.stats();                                                                |
+   +------|查詢資料庫版本|--------------------------------------------------------+
+   | > db.version();                                                              |
+   +------|刪除資料庫|------------------------------------------------------------+
+   | > db.dropDatabase();                                                         |
+   +------|查詢目前資料庫IP|------------------------------------------------------+
+   | > db.getMongo();                                                             | 
+   +------|新增使用者帳號|--------------------------------------------------------+
+   | > db.addUser("TestUser","123456",true);                                      |
+   +------|修改使用者密碼|--------------------------------------------------------+
+   | > db.addUser("TestUser","654321");                                           |
+   +------------------------------------------------------------------------------+
+
+
+
+
+查看系統日誌
+   +-------------------------------+
+   | tail -f /usr/local/mongodb/data/log/mongodb.log
+   +----------------------------
+
+ 

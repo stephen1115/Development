@@ -1,0 +1,482 @@
+建構MYSQL伺服器
+
+1. 安裝MYSQL Database
+＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+｜[stephen@localhost ~]$ yum -y install mysql-server                                                  ｜
+｜Loaded plugins: fastestmirror, refresh-packagekit, security                                         ｜
+｜Loading mirror speeds from cached hostfile                                                          ｜
+｜ * base: ftp.cs.pu.edu.tw                                                                           ｜
+｜ * extras: ftp.cs.pu.edu.tw                                                                         ｜
+｜ * updates: ftp.cs.pu.edu.tw                                                                        ｜
+｜Setting up Install Process                                                                          ｜
+｜Resolving Dependencies                                                                              ｜
+｜--> Running transaction check                                                                       ｜
+｜---> Package mysql-server.i686 0:5.1.67-1.el6_3 will be installed                                   ｜
+｜--> Processing Dependency: mysql = 5.1.67-1.el6_3 for package: mysql-server-5.1.67-1.el6_3.i686     ｜
+｜--> Processing Dependency: perl-DBI for package: mysql-server-5.1.67-1.el6_3.i686                   ｜
+｜--> Processing Dependency: perl-DBD-MySQL for package: mysql-server-5.1.67-1.el6_3.i686             ｜
+｜--> Processing Dependency: perl(DBI) for package: mysql-server-5.1.67-1.el6_3.i686                  ｜
+｜--> Running transaction check                                                                       ｜
+｜---> Package mysql.i686 0:5.1.67-1.el6_3 will be installed                                          ｜
+｜--> Processing Dependency: mysql-libs = 5.1.67-1.el6_3 for package: mysql-5.1.67-1.el6_3.i686       ｜
+｜---> Package perl-DBD-MySQL.i686 0:4.013-3.el6 will be installed                                    ｜
+｜---> Package perl-DBI.i686 0:1.609-4.el6 will be installed                                          ｜
+｜--> Running transaction check                                                                       ｜
+｜---> Package mysql.i686 0:5.1.67-1.el6_3 will be installed                                          ｜
+｜--> Processing Dependency: mysql-libs = 5.1.67-1.el6_3 for package: mysql-5.1.67-1.el6_3.i686       ｜
+｜---> Package perl-DBD-MySQL.i686 0:4.013-3.el6 will be installed                                    ｜
+｜---> Package perl-DBI.i686 0:1.609-4.el6 will be installed                                          ｜
+｜--> Running transaction check                                                                       ｜
+｜---> Package mysql-libs.i686 0:5.1.61-4.el6 will be updated                                         ｜
+｜---> Package mysql-libs.i686 0:5.1.67-1.el6_3 will be an update                                     ｜
+｜--> Finished Dependency Resolution                                                                  ｜
+｜                                                                                                    ｜
+｜Dependencies Resolved                                                                               ｜
+｜                                                                                                    ｜
+｜================================================================================                    ｜
+｜ Package               Arch        Version                 Repository      Size                     ｜
+｜================================================================================                    ｜
+｜Installing:                                                                                         ｜
+｜ mysql-server          i686        5.1.67-1.el6_3          updates        8.8 M                     ｜
+｜Installing for dependencies:                                                                        ｜
+｜ mysql                 i686        5.1.67-1.el6_3          updates        896 k                     ｜
+｜ perl-DBD-MySQL        i686        4.013-3.el6             base           134 k                     ｜
+｜ perl-DBI              i686        1.609-4.el6             base           705 k                     ｜
+｜Updating for dependencies:                                                                          ｜
+｜ mysql-libs            i686        5.1.67-1.el6_3          updates        1.2 M                     ｜
+｜                                                                                                    ｜
+｜Transaction Summary                                                                                 ｜
+｜================================================================================                    ｜
+｜Install       4 Package(s)                                                                          ｜
+｜Upgrade       1 Package(s)                                                                          ｜
+｜                                                                                                    ｜
+｜Total download size: 12 M                                                                           ｜
+｜Downloading Packages:                                                                               ｜
+｜(1/5): mysql-5.1.67-1.el6_3.i686.rpm                     | 896 kB     00:00                         ｜
+｜(2/5): mysql-libs-5.1.67-1.el6_3.i686.rpm                | 1.2 MB     00:00                         ｜
+｜(3/5): mysql-server-5.1.67-1.el6_3.i686.rpm                                  | 8.8 MB     00:08     ｜
+｜(4/5): perl-DBD-MySQL-4.013-3.el6.i686.rpm                                   | 134 kB     00:00     ｜
+｜(5/5): perl-DBI-1.609-4.el6.i686.rpm                                         | 705 kB     00:00     ｜
+｜--------------------------------------------------------------------------------------------------- ｜
+｜Total                                                               1.1 MB/s |  12 MB     00:10     ｜
+｜Running rpm_check_debug                                                                             ｜
+｜Running Transaction Test                                                                            ｜
+｜Transaction Test Succeeded                                                                          ｜
+｜Running Transaction                                                                                 ｜
+｜  Updating   : mysql-libs-5.1.67-1.el6_3.i686                                                   1/6 ｜
+｜  Installing : perl-DBI-1.609-4.el6.i686                                                        2/6 ｜
+｜  Installing : perl-DBD-MySQL-4.013-3.el6.i686                                                  3/6 ｜
+｜  Installing : mysql-5.1.67-1.el6_3.i686                                                        4/6 ｜
+｜  Installing : mysql-server-5.1.67-1.el6_3.i686                                                 5/6 ｜
+｜  Cleanup    : mysql-libs-5.1.61-4.el6.i686                                                     6/6 ｜
+｜  Verifying  : mysql-5.1.67-1.el6_3.i686                                                        1/6 ｜
+｜  Verifying  : perl-DBD-MySQL-4.013-3.el6.i686                                                  2/6 ｜
+｜  Verifying  : mysql-server-5.1.67-1.el6_3.i686                                                 3/6 ｜
+｜  Verifying  : mysql-libs-5.1.67-1.el6_3.i686                                                   4/6 ｜
+｜  Verifying  : perl-DBI-1.609-4.el6.i686                                                        5/6 ｜
+｜  Verifying  : mysql-libs-5.1.61-4.el6.i686                                                     6/6 ｜
+｜                                                                                                    ｜
+｜Installed:                                                                                          ｜
+｜  mysql-server.i686 0:5.1.67-1.el6_3                                                                ｜
+｜                                                                                                    ｜
+｜Dependency Installed:                                                                               ｜
+｜  mysql.i686 0:5.1.67-1.el6_3    perl-DBD-MySQL.i686 0:4.013-3.el6    perl-DBI.i686 0:1.609-4.el6   ｜
+｜                                                                                                    ｜
+｜Dependency Updated:                                                                                 ｜
+｜  mysql-libs.i686 0:5.1.67-1.el6_3                                                                  ｜
+｜                                                                                                    ｜
+｜Complete!                                                                                           ｜
+｜                                                                                                  　｜
+＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+
+2. 配置 /etc/my.cnf
+// ================= 以下的修改執行後失敗，回復原狀後就成功啟動MYSQL了====================//
+為了方便管理，將DB FILE從預設的資料夾/var/lib/mysql 改放到/home/stephen/db/mysqldb下
+＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+｜[root@localhost stephen]# mkdir db                                ｜
+｜[root@localhost stephen]# cd db                                   ｜
+｜[root@localhost db]# mkdir mysqldb                                ｜
+｜[root@localhost db]# chown mysql:mysql /home/stephen/db/mysqldb   ｜
+＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+
+開始修改/etc/my.cnf
+＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+｜ [root@localhost db]# vim /etc/my.cnf                                           ｜
+｜ [mysqld]                                                                       ｜
+｜ # datadir=/var/lib/mysql          # <== 預設值                                 ｜
+｜ datadir=/home/stephen/db/mysql    # <== 修改後                                 ｜
+｜ socket=/var/lib/mysql/mysql.sock                                               ｜
+｜ user=mysql                                                                     ｜
+｜ # Disabling symbolic-links is recommended to prevent assorted security risks   ｜
+｜ symbolic-links=0                                                               ｜
+｜                                                                                ｜
+｜ default-character-set = utf8      # <== 增加這一行                             ｜
+｜                                                                                ｜
+｜ [mysqld_safe]                                                                  ｜
+｜ log-error=/var/log/mysqld.log                                                  ｜
+｜ pid-file=/var/run/mysqld/mysqld.pid                                            ｜
+｜                                                                                ｜
+｜ [mysql]                           # <== 增加這二行                             ｜
+｜ default-character-set = utf8                                                   ｜
+＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+// ========================================================================================//
+
+設定MYSQL隨系統自動啟動服務
+＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+｜[root@localhost db]# chkconfig mysqld on                     <== 設定 MySQL 會隨系統自動啟動                ｜
+｜[root@localhost db]# chkconfig --list | grep mysqld          <== 確認 MySQL 有自動啟動                      ｜
+｜mysqld         	0:off	1:off	2:on	3:on	4:on	5:on	6:off    <== 2 ~ 5 都為 on, 狀態就是正常  ｜
+｜                                                                                                            ｜
+＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+
+3. 啟動MYSQL
+＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+｜[root@localhost db]# /etc/rc.d/init.d/mysqld start                  ｜
+｜Initializing MySQL database:  Installing MySQL system tables...     ｜
+｜OK                                                                  ｜
+｜Filling help tables...                                              ｜
+｜OK                                                                  ｜
+｜Starting mysqld:                                           [  OK  ] ｜
+＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+ 檢查 MySQL 是否啟動成功並 Listen 相關 Port
+＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+｜[root@localhost db]# netstat -tnl                                                   ｜
+｜Active Internet connections (only servers)                                          ｜
+｜Proto Recv-Q Send-Q Local Address               Foreign Address             State   ｜
+｜tcp        0      0 0.0.0.0:3306                0.0.0.0:*                   LISTEN  ｜
+＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+
+4. 設定MYSQL管理者密碼
+MYSQL在安裝完後root的密碼是空的(此處的root指的並不是OS的super user)
+設定的方法有兩種：
+A.
+＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+｜[root@localhost stephen]# mysqladmin -u root password YOUR_PASSWORD     <== 設定新密碼　　　｜
+｜[root@localhost stephen]# mysqladmin -u root -p password NEW_PASSWORD   <== 日後若要更改密碼｜
+＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+
+B.
+＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+｜[root@localhost stephen]# mysql -u root　 <== 使用root帳號登入MySQL Server                  ｜
+｜                                                                                            ｜
+｜Welcome to the MySQL monitor.  Commands end with ; or \g.                                   ｜
+｜Your MySQL connection id is 2                                                               ｜
+｜Server version: 5.1.67 Source distribution                                                  ｜
+｜                                                                                            ｜
+｜Copyright (c) 2000, 2012, Oracle and/or its affiliates. All rights reserved.                ｜
+｜                                                                                            ｜
+｜Oracle is a registered trademark of Oracle Corporation and/or its                           ｜
+｜affiliates. Other names may be trademarks of their respective                               ｜
+｜owners.                                                                                     ｜
+｜                                                                                            ｜
+｜Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.              ｜
+｜                                                                                            ｜
+｜                                                                                            ｜
+｜mysql> select user,host,password from mysql.user;　     <== 查看帳號資訊                    ｜
+｜+------+-----------------------+----------+                                                 ｜
+｜| user | host                  | password |                                                 ｜
+｜+------+-----------------------+----------+                                                 ｜
+｜| root | localhost             |          |                                                 ｜
+｜| root | localhost.localdomain |          |                                                 ｜
+｜| root | 127.0.0.1             |          |                                                 ｜
+｜|      | localhost             |          |                                                 ｜
+｜|      | localhost.localdomain |          |                                                 ｜
+｜+------+-----------------------+----------+                                                 ｜
+｜5 rows in set (0.01 sec)                                                                    ｜
+｜                                                                                            ｜
+｜                                                                                            ｜
+｜mysql> set password for root@localhost=password('admin');　 <== 設置root密碼                ｜
+｜Query OK, 0 rows affected (0.01 sec)                                                        ｜
+｜                                                                                            ｜
+｜mysql> set password for root@'localhost.localdomain'=password('admin');　<== 設置root密碼   ｜
+｜Query OK, 0 rows affected (0.01 sec)                                                        ｜
+｜                                                                                            ｜
+｜mysql> set password for root@'127.0.0.1'=password('admin');　 <== 設置root密碼              ｜
+｜Query OK, 0 rows affected (0.01 sec)                                                        ｜
+｜                                                                                            ｜
+｜mysql> select user,host,password from mysql.user;　 <== 查看帳號資訊                        ｜
+｜+------+-----------------------+-------------------------------------------+                ｜
+｜| user | host                  | password                                  |                ｜
+｜+------+-----------------------+-------------------------------------------+                ｜
+｜| root | localhost             | *4ACFE3202A5FF5CF467898FC58AAB1D615029441 |                ｜
+｜| root | localhost.localdomain | *4ACFE3202A5FF5CF467898FC58AAB1D615029441 |                ｜
+｜| root | 127.0.0.1             | *4ACFE3202A5FF5CF467898FC58AAB1D615029441 |                ｜
+｜|      | localhost             |                                           |                ｜
+｜|      | localhost.localdomain |                                           |                ｜
+｜+------+-----------------------+-------------------------------------------+                ｜
+｜5 rows in set (0.00 sec)                                                                    ｜
+｜                                                                                            ｜
+｜                                                                                            ｜
+｜mysql> exit　 <== 退出MySQL                                                                 ｜
+｜Bye                                                                                         ｜
+＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+
+5. 測試登入MYSQL
+＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+｜[root@localhost stephen]# mysql -u root    <== 使用空密碼登入                           ｜
+｜ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: NO)      ｜
+｜                                                                                        ｜
+｜[root@localhost stephen]# mysql -u root -h localhost.localdomain     <== 使用空密碼登入 ｜
+｜ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: NO)      ｜
+｜                                                                                        ｜
+｜[root@localhost stephen]# mysql -u root -h 127.0.0.1     <== 使用空密碼登入             ｜
+｜ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: NO)      ｜
+｜                                                                                        ｜
+｜[root@localhost stephen]# mysql -u root -p    <== 使用密碼登入                          ｜
+｜Enter password:                               <== 此處鍵入密碼                          ｜
+｜Welcome to the MySQL monitor.  Commands end with ; or \g.                               ｜
+｜Your MySQL connection id is 7                                                           ｜
+｜Server version: 5.1.67 Source distribution                                              ｜
+｜                                                                                        ｜
+｜Copyright (c) 2000, 2012, Oracle and/or its affiliates. All rights reserved.            ｜
+｜                                                                                        ｜
+｜Oracle is a registered trademark of Oracle Corporation and/or its                       ｜
+｜affiliates. Other names may be trademarks of their respective                           ｜
+｜owners.                                                                                 ｜
+｜                                                                                        ｜
+｜Type 'help;' or '\h' for help. Type '\c' to clear the current inputstatement.           ｜
+｜                                                                                        ｜
+｜mysql> exit                                                                             ｜
+｜Bye                                                                                     ｜
+｜                                                                                        ｜
+｜mysql> exit                                                                             ｜
+＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+
+刪除匿名帳號
+MYSQL在安裝後會存在有帳號及密碼為空的帳號，為避免資料庫被匿名登入，刪除這類帳號
+＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+｜[root@localhost stephen]# mysql -u root -p                                      ｜
+｜Enter password:                                                                 ｜
+｜Welcome to the MySQL monitor.  Commands end with ; or \g.                       ｜
+｜Your MySQL connection id is 8                                                   ｜
+｜Server version: 5.1.67 Source distribution                                      ｜
+｜                                                                                ｜
+｜Copyright (c) 2000, 2012, Oracle and/or its affiliates. All rights reserved.    ｜
+｜                                                                                ｜
+｜Oracle is a registered trademark of Oracle Corporation and/or its               ｜
+｜affiliates. Other names may be trademarks of their respective                   ｜
+｜owners.                                                                         ｜
+｜                                                                                ｜
+｜Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.  ｜
+｜                                                                                ｜
+｜mysql> select user,host,password from mysql.user                                ｜
+｜    -> ;                                                                        ｜
+｜+------+-----------------------+-------------------------------------------+    ｜
+｜| user | host                  | password                                  |    ｜
+｜+------+-----------------------+-------------------------------------------+    ｜
+｜| root | localhost             | *4ACFE3202A5FF5CF467898FC58AAB1D615029441 |    ｜
+｜| root | localhost.localdomain | *4ACFE3202A5FF5CF467898FC58AAB1D615029441 |    ｜
+｜| root | 127.0.0.1             | *4ACFE3202A5FF5CF467898FC58AAB1D615029441 |    ｜
+｜|      | localhost             |                                           |    ｜
+｜|      | localhost.localdomain |                                           |    ｜
+｜+------+-----------------------+-------------------------------------------+    ｜
+｜5 rows in set (0.00 sec)                                                        ｜
+｜                                                                                ｜
+｜mysql> delete from mysql.user where user='';                                    ｜
+｜Query OK, 2 rows affected (0.04 sec)                                            ｜
+｜                                                                                ｜
+｜mysql> select user,host,password from mysql.user;                               ｜
+｜+------+-----------------------+-------------------------------------------+    ｜
+｜| user | host                  | password                                  |    ｜
+｜+------+-----------------------+-------------------------------------------+    ｜
+｜| root | localhost             | *4ACFE3202A5FF5CF467898FC58AAB1D615029441 |    ｜
+｜| root | localhost.localdomain | *4ACFE3202A5FF5CF467898FC58AAB1D615029441 |    ｜
+｜| root | 127.0.0.1             | *4ACFE3202A5FF5CF467898FC58AAB1D615029441 |    ｜
+｜+------+-----------------------+-------------------------------------------+    ｜
+｜3 rows in set (0.00 sec)                                                        ｜
+＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+
+刪除測試用資料庫
+MYSQL在安裝後，會存在一個名為test的空資料庫，可以將其刪除。
+＋－－－－－－－－－－－－－－－－－－－＋
+｜mysql> show databases;                ｜
+｜+--------------------+                ｜
+｜| Database           |                ｜
+｜+--------------------+                ｜
+｜| information_schema |                ｜
+｜| mysql              |                ｜
+｜| test               |                ｜
+｜+--------------------+                ｜
+｜3 rows in set (0.09 sec)              ｜
+｜                                      ｜
+｜mysql> drop database test;            ｜
+｜Query OK, 0 rows affected (0.19 sec)  ｜
+｜                                      ｜
+｜mysql> show databases;                ｜
+｜+--------------------+                ｜
+｜| Database           |                ｜
+｜+--------------------+                ｜
+｜| information_schema |                ｜
+｜| mysql              |                ｜
+｜+--------------------+                ｜
+｜2 rows in set (0.00 sec)              ｜
+＋－－－－－－－－－－－－－－－－－－－＋
+
+6. 測試MYSQL
+測試MYSQL，包括建立新帳號，新資料庫並建立Table及SQL指令
+＋－－－－－｜建立名為javauser的新帳號並賦予test資料庫的完整權限｜－－－－－－－－－－＋
+｜[root@localhost stephen]# mysql -u root -p 　　　　　　　　　　　　　　　　　　　　 ｜
+｜Enter password:                                                                     ｜
+｜Welcome to the MySQL monitor.  Commands end with ; or \g.                           ｜
+｜Your MySQL connection id is 8                                                       ｜
+｜Server version: 5.1.67 Source distribution                                          ｜
+｜                                                                                    ｜
+｜Copyright (c) 2000, 2012, Oracle and/or its affiliates. All rights reserved.        ｜
+｜                                                                                    ｜
+｜Oracle is a registered trademark of Oracle Corporation and/or its                   ｜
+｜affiliates. Other names may be trademarks of their respective                       ｜
+｜owners.                                                                             ｜
+｜                                                                                    ｜
+｜Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.      ｜
+｜                                                                                    ｜
+｜mysql> grant all privileges on test.* to javauser@localhost identified by '密碼';   ｜
+｜Query OK, 0 rows affected (0.01 sec)                                                ｜
+｜                                                                                    ｜
+｜mysql> select user,host,password from mysql.user;                                   ｜
+｜+----------+-----------------------+-------------------------------------------+    ｜
+｜| user     | host                  | password                                  |    ｜
+｜+----------+-----------------------+-------------------------------------------+    ｜
+｜| root     | localhost             |*4ACFE3202A5FF5CF467898FC58AAB1D615029441  |    ｜
+｜| root     | localhost.localdomain |*4ACFE3202A5FF5CF467898FC58AAB1D615029441  |    ｜
+｜| root     | 127.0.0.1             |*4ACFE3202A5FF5CF467898FC58AAB1D615029441  |    ｜
+｜| javauser | localhost             |*369F1660C302F93C886E48E82139810FF79DB219  |    ｜
+｜+----------+-----------------------+-------------------------------------------+    ｜
+｜4 rows in set (0.00 sec)                                                            ｜
+｜                                                                                    ｜
+｜mysql> exit                                                                         ｜
+｜Bye                                                                                 ｜
+＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+
+＋－－－－｜建立名為test的新資料庫並且建立名為test的Table｜－－－－－－－－－－－－＋
+｜[root@localhost stephen]# mysql -u javauser -p　　　　　　　　　　　　　　　　　 ｜　
+｜Enter password:                                                                  ｜
+｜Welcome to the MySQL monitor.  Commands end with ; or \g.                        ｜
+｜Your MySQL connection id is 9                                                    ｜
+｜Server version: 5.1.67 Source distribution                                       ｜
+｜                                                                                 ｜
+｜Copyright (c) 2000, 2012, Oracle and/or its affiliates. All rights reserved.     ｜
+｜                                                                                 ｜
+｜Oracle is a registered trademark of Oracle Corporation and/or its                ｜
+｜affiliates. Other names may be trademarks of their respective                    ｜
+｜owners.                                                                          ｜
+｜                                                                                 ｜
+｜Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.   ｜
+｜                                                                                 ｜
+｜mysql> create database test;                                                     ｜
+｜Query OK, 1 row affected (0.00 sec)                                              ｜
+｜                                                                                 ｜
+｜mysql> show databases;                                                           ｜
+｜+--------------------+                                                           ｜
+｜| Database           |                                                           ｜
+｜+--------------------+                                                           ｜
+｜| information_schema |                                                           ｜
+｜| test               |                                                           ｜
+｜+--------------------+                                                           ｜
+｜2 rows in set (0.00 sec)                                                         ｜
+｜                                                                                 ｜
+｜mysql> use test                                                                  ｜
+｜Database changed                                                                 ｜
+｜mysql> create table test(num int,name varchar(50));                              ｜
+｜Query OK, 0 rows affected (0.09 sec)                                             ｜
+｜                                                                                 ｜
+｜mysql> show tables;                                                              ｜
+｜+----------------+                                                               ｜
+｜| Tables_in_test |                                                               ｜
+｜+----------------+                                                               ｜
+｜| test           |                                                               ｜
+｜+----------------+                                                               ｜
+｜1 row in set (0.00 sec)                                                          ｜
+＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－-－－＋
+
+＋－－－－－－－－｜為test Table建立一筆資料｜－－－－－＋
+｜mysql> insert into test values(1,'Hello World!');     ｜
+｜Query OK, 1 row affected (0.00 sec)                   ｜
+｜                                                      ｜
+｜mysql> select * from test;                            ｜
+｜+------+--------------+                               ｜
+｜| num  | name         |                               ｜
+｜+------+--------------+                               ｜
+｜|    1 | Hello World! |                               ｜
+｜+------+--------------+                               ｜
+｜1 row in set (0.00 sec)                               ｜
+｜                                                      ｜
+｜mysql> update test set name='Hello Everyone!';        ｜
+｜Query OK, 1 row affected (0.00 sec)                   ｜
+｜Rows matched: 1  Changed: 1  Warnings: 0              ｜
+｜                                                      ｜
+｜mysql> select * from test;                            ｜
+｜+------+-----------------+                            ｜
+｜| num  | name            |                            ｜
+｜+------+-----------------+                            ｜
+｜|    1 | Hello Everyone! |                            ｜
+｜+------+-----------------+                            ｜
+｜1 row in set (0.00 sec)                               ｜
+｜                                                      ｜
+｜mysql> delete from test where num=1;                  ｜
+｜Query OK, 1 row affected (0.00 sec)                   ｜
+｜                                                      ｜
+｜mysql> select * from test;                            ｜
+｜Empty set (0.00 sec)                                  ｜
+｜                                                      ｜
+｜mysql> drop table test;                               ｜
+｜Query OK, 0 rows affected (0.00 sec)                  ｜
+｜                                                      ｜
+｜mysql> show tables;                                   ｜
+｜Empty set (0.00 sec)                                  ｜
+｜                                                      ｜
+｜mysql> drop database test;                            ｜
+｜Query OK, 0 rows affected (0.00 sec)                  ｜
+｜                                                      ｜
+｜mysql> show databases;                                ｜
+｜+--------------------+                                ｜
+｜| Database           |                                ｜
+｜+--------------------+                                ｜
+｜| information_schema |                                ｜
+｜+--------------------+                                ｜
+｜1 row in set (0.02 sec)                               ｜
+｜                                                      ｜
+｜mysql> exit                                           ｜
+｜Bye                                                   ｜
+＋－－－－－－－－｜為test Table建立一筆資料｜－－－－－＋
+
+＋－－－－－－－－－－－－－－｜刪除測試的使用者帳號及權限｜－－－－－－－－－－＋
+｜[root@localhost stephen]# mysql -u root -p                                    ｜
+｜Enter password:i                                                              ｜
+｜Welcome to the MySQL monitor.  Commands end with ; or \g.                     ｜
+｜Your MySQL connection id is 10                                                ｜
+｜Server version: 5.1.67 Source distribution                                    ｜
+｜                                                                              ｜
+｜Copyright (c) 2000, 2012, Oracle and/or its affiliates. All rights reserved.  ｜
+｜                                                                              ｜
+｜Oracle is a registered trademark of Oracle Corporation and/or its             ｜
+｜affiliates. Other names may be trademarks of their respective                 ｜
+｜owners.                                                                       ｜
+｜                                                                              ｜
+｜Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.｜
+｜                                                                              ｜
+｜mysql> revoke all privileges on *.* from javauser@localhost;                  ｜
+｜Query OK, 0 rows affected (0.00 sec)                                          ｜
+｜                                                                              ｜
+｜mysql> delete from mysql.user where user='javauser' and host='localhost';     ｜
+｜Query OK, 1 row affected (0.00 sec)                                           ｜
+｜                                                                              ｜
+｜mysql> select user from mysql.user where user='javauser';                     ｜
+｜Empty set (0.00 sec)                                                          ｜
+｜                                                                              ｜
+｜mysql> flush privileges;                                                      ｜
+｜Query OK, 0 rows affected (0.00 sec)                                          ｜
+｜                                                                              ｜
+｜mysql> exit;                                                                  ｜
+｜Bye                                                                           ｜
+＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+
+7. 重新啟動Http service
+＋－－－－－－－－－－－－－－｜重新啟動 Httpservice｜－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+｜[root@localhost stephen]# /etc/rc.d/init.d/httpd restart                                                          ｜
+｜Stopping httpd:                                            [FAILED]                                               ｜
+｜Starting httpd: httpd: Could not reliably determine the server's fully qualified domain name, using localhost.    ｜
+｜ localdomain for ServerName                                                                                       ｜
+｜                                                           [  OK  ]                                               ｜
+＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+
+
