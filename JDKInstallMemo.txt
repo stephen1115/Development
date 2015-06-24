@@ -62,3 +62,18 @@ Linux系統上的JAVA環境建置與管理
    到此，JDK的安裝就都已完成。可以執行以下命令來確認安裝。
    # java -version
 
+6. 移除JAVA
+   sudo update-alternatives --remove name path
+   sudo update-alternatives --remove java /usr/lib/jvm/java-6-sun/jre/bin/java
+   sudo update-alternatives --remove javac /usr/lib/jvm/java-7-sun/bin/javac
+   sudo update-alternatives --remove jar /usr/lib/jvm/java-7-sun/bin/jar
+   
+7. 開啟firefox plugin [只是記錄, 未證實是否可行]
+   32 bit:
+   sudo ln -s /usr/lib/jvm/jdk1.7.0/jre/lib/i386/libnpjp2.so /usr/lib/mozilla/plugins
+
+   64 bit:
+   sudo ln -s /usr/lib/jvm/jdk1.7.0/jre/lib/amd64/libnpjp2.so /usr/lib/mozilla/plugins
+   
+   移除plugin：
+   sudo rm /usr/lib/mozilla/plugins/libnpjp2.so
