@@ -2,93 +2,124 @@ Install Tomcat7 on CentOS/RHEL
 
 安裝Tomcat有二種方式：
 1. 使用YUM安裝
-   # yum install tomcat -y
-   Tomcat 將被安裝在/usr/share目錄下
+   ┌───────────────────────────────────────────────────────────────────────────┐
+   │ [user@localhost ~]$ yum install tomcat -y                                 │
+　 └───────────────────────────────────────────────────────────────────────────┘
+   Tomcat 將被安裝在/usr/share目錄下，可以使用以下命令查詢安裝結果
+   ┌───────────────────────────────────────────────────────────────────────────┐
+   │ [user@localhost ~]$ rpm -ql tomcat                                        │
+　 └───────────────────────────────────────────────────────────────────────────┘
+   [user@localhost ~]$ rpm -ql tomcat
 
 2. 手動安裝
    Step1: Download and Unpack Tomcat 7 (or latest)
-   預計將Tomcat安裝於/usr/share/下
-   # cd /usr/share
-   
+   預計將Tomcat安裝於/usr/share/下  
    下載網址
    http://tomcat.apache.org/download-70.cgi
 
    解壓縮
-   # tar -zxvf apache-tomcat-7.0.29.tar.gz 
+   ┌───────────────────────────────────────────────────────────────────────────┐
+   │ [user@localhost ~]$ tar -zxvf apache-tomcat-7.0.29.tar.gz -C /usr/share   │
+　 └───────────────────────────────────────────────────────────────────────────┘
+   
+   Step2: Configure Tomcat to Run as a Service.
+   以下將把Tomcat配置成系統的service，並且寫一個Script可以用來Start/Stop/Restart 
+   Tomcat
+   ┌───────────────────────────────────────────────────────────────────────────┐
+   │ [user@localhost ~]$ vim tomcat                                            │
+　 └───────────────────────────────────────────────────────────────────────────┘
+   ┌───────────────────────────────────────────────────────────────────────────┐   
+   │ #!/bin/bash                                                               │
+   │ # description: Tomcat Start Stop Restart                                  │
+   │ # processname: tomcat                                                     │
+   │ # chkconfig: 234 20 80                                                    │
+   │ JAVA_HOME=/usr/java/jdk1.7.0_05                                           │
+   │ export JAVA_HOME                                                          │
+   │ PATH=$JAVA_HOME/bin:$PATH                                                 │
+   │ export PATH                                                               │
+   │ CATALINA_HOME=/usr/share/apache-tomcat-7.0.29                             │
+   │                                                                           │
+   │ case $1 in                                                                │
+   │ start)                                                                    │
+   │ sh $CATALINA_HOME/bin/startup.sh                                          │
+   │ ;;                                                                        │
+   │ stop)                                                                     │
+   │ sh $CATALINA_HOME/bin/shutdown.sh                                         │
+   │ ;;                                                                        │
+   │ restart)                                                                  │
+   │ sh $CATALINA_HOME/bin/shutdown.sh                                         │
+   │ sh $CATALINA_HOME/bin/startup.sh                                          │
+   │ ;;                                                                        │
+   │ esac                                                                      │
+   │ exit 0                                                                    │
+   └───────────────────────────────────────────────────────────────────────────┘
+   ┌───────────────────────────────────────────────────────────────────────────┐
+   │ [user@localhost ~]$ chmod 755 tomcat                                      │
+　 └───────────────────────────────────────────────────────────────────────────┘   
+   進行以下測試
+   ┌───────────────────────────────────────────────────────────────────────────┐
+   │ [user@localhost ~]$ sudo ./tomcat start                                   │
+   │ [user@localhost ~]$ sudo ./tomcat restart                                 │
+   │ [user@localhost ~]$ sudo ./tomcat stop                                    │  
+　 └───────────────────────────────────────────────────────────────────────────┘     
+   若測試沒有問題，就將Script 拷貝到/etc/init.d目錄下
 
-3. 配置Tomcat
-   以下將把Tomcat配置成系統的service，並且寫一個Script可以用來Start/Stop/Restart Tomcat
-   # vim tomcat
-      #!/bin/bash  
-      # description: Tomcat Start Stop Restart  
-      # processname: tomcat  
-      # chkconfig: 234 20 80  
-      JAVA_HOME=/usr/java/jdk1.7.0_05  
-      export JAVA_HOME  
-      PATH=$JAVA_HOME/bin:$PATH  
-      export PATH  
-      CATALINA_HOME=/usr/share/apache-tomcat-7.0.29  
-        
-      case $1 in  
-      start)  
-      sh $CATALINA_HOME/bin/startup.sh  
-      ;;   
-      stop)     
-      sh $CATALINA_HOME/bin/shutdown.sh  
-      ;;   
-      restart)  
-      sh $CATALINA_HOME/bin/shutdown.sh  
-      sh $CATALINA_HOME/bin/startup.sh  
-      ;;   
-      esac      
-      exit 0     
-
-  # chmod 755 tomcat
-  進行以下測試
-  # sudo ./tomcat start
-  # sudo ./tomcat restart
-  # sudo ./tomcat stop
-  若測試沒有問題，就將Script 拷貝到/etc/init.d目錄下
-
-  接下來可以將Tomcat設定成系統的Service，並且可以在開機時自動啟動
-  # sudo chkconfig --add tomcat
-  # sudo chkconfig --level 234 tomcat on
-  確認
-  # sudo chkconfig --list tomcat
-  啟動Tomcat
-  # service tomcat start
-  Using CATALINA_BASE:   /usr/share/apache-tomcat-7.0.64
-  Using CATALINA_HOME:   /usr/share/apache-tomcat-7.0.64
-  Using CATALINA_TMPDIR: /usr/share/apache-tomcat-7.0.64/temp
-  Using JRE_HOME:        /usr/lib/jvm/java-7-sun
-  Using CLASSPATH:       /usr/share/apache-tomcat-7.0.64/bin/bootstrap.jar:/usr/share/apache-tomcat-7.0.64/bin/tomcat-juli.jar
-  Tomcat started.
+   接下來可以將Tomcat設定成系統的Service，並且可以在開機時自動啟動
+   ┌───────────────────────────────────────────────────────────────────────────┐
+   │ [user@localhost ~]$ sudo chkconfig --add tomcat                           │
+   │ [user@localhost ~]$ sudo chkconfig --level 234 tomcat on                  │  
+　 └───────────────────────────────────────────────────────────────────────────┘     
+   確認
+   ┌───────────────────────────────────────────────────────────────────────────┐
+   │ [user@localhost ~]$ sudo chkconfig --list tomcat                          │
+   └───────────────────────────────────────────────────────────────────────────┘
+   
+   測試啟動Tomcat
+   ┌───────────────────────────────────────────────────────────────────────────┐
+   │ [user@localhost ~]$ service tomcat start                                  │
+   │ Using CATALINA_BASE:   /usr/share/apache-tomcat-7.0.64                    │
+   │ Using CATALINA_HOME:   /usr/share/apache-tomcat-7.0.64                    │
+   │ Using CATALINA_TMPDIR: /usr/share/apache-tomcat-7.0.64/temp               │
+   │ Using JRE_HOME:        /usr/lib/jvm/java-7-sun                            │
+   │ Using CLASSPATH:       /usr/share/apache-tomcat-7.0.64/bin/bootstrap.jar: │
+   │ /usr/share/apache-tomcat-7.0.64/bin/tomcat-juli.jar                       │
+   │ Tomcat started.                                                           │
+   └───────────────────────────────────────────────────────────────────────────┘
+   
+   測試重新啟動Tomcat
+   ┌───────────────────────────────────────────────────────────────────────────┐
+   │ [user@localhost ~]$ sudo service tomcat restart                           │
+   │ Using CATALINA_BASE:   /usr/share/apache-tomcat-7.0.64                    │
+   │ Using CATALINA_HOME:   /usr/share/apache-tomcat-7.0.64                    │
+   │ Using CATALINA_TMPDIR: /usr/share/apache-tomcat-7.0.64/temp               │
+   │ Using JRE_HOME:        /usr/lib/jvm/java-7-sun                            │
+   │ Using CLASSPATH:       /usr/share/apache-tomcat-7.0.64/bin/bootstrap.jar: │
+   │ /usr/share/apache-tomcat-7.0.64/bin/tomcat-juli.jar                       │
+   │ Using CATALINA_BASE:   /usr/share/apache-tomcat-7.0.64                    │
+   │ Using CATALINA_HOME:   /usr/share/apache-tomcat-7.0.64                    │
+   │ Using CATALINA_TMPDIR: /usr/share/apache-tomcat-7.0.64/temp               │
+   │ Using JRE_HOME:        /usr/lib/jvm/java-7-sun                            │
+   │ Using CLASSPATH:       /usr/share/apache-tomcat-7.0.64/bin/bootstrap.jar: │
+   │ /usr/share/apache-tomcat-7.0.64/bin/tomcat-juli.jar                       │
+   │ Tomcat started.                                                           │
+   └───────────────────────────────────────────────────────────────────────────┘
+   
+   測試停止Tomcat
+   ┌───────────────────────────────────────────────────────────────────────────┐
+   │ [user@localhost ~]$ service tomcat stop                                   │
+   │ Using CATALINA_BASE:   /usr/share/apache-tomcat-7.0.64                    │
+   │ Using CATALINA_HOME:   /usr/share/apache-tomcat-7.0.64                    │
+   │ Using CATALINA_TMPDIR: /usr/share/apache-tomcat-7.0.64/temp               │
+   │ Using JRE_HOME:        /usr/lib/jvm/java-7-sun                            │
+   │ Using CLASSPATH:       /usr/share/apache-tomcat-7.0.64/bin/bootstrap.jar: │
+   │ /usr/share/apache-tomcat-7.0.64/bin/tomcat-juli.jar                       │
+   └───────────────────────────────────────────────────────────────────────────┘
+   
+   確認Tomcat log是否正確寫入
+   ┌───────────────────────────────────────────────────────────────────────────┐   
+   │ [user@localhost ~]$ more /usr/share/apache-tomcat-7.0.64/logs/catalina.out│
+   └───────────────────────────────────────────────────────────────────────────┘
   
-  重新啟動Tomcat
-  # sudo service tomcat restart
-  Using CATALINA_BASE:   /usr/share/apache-tomcat-7.0.64
-  Using CATALINA_HOME:   /usr/share/apache-tomcat-7.0.64
-  Using CATALINA_TMPDIR: /usr/share/apache-tomcat-7.0.64/temp
-  Using JRE_HOME:        /usr/lib/jvm/java-7-sun
-  Using CLASSPATH:       /usr/share/apache-tomcat-7.0.64/bin/bootstrap.jar:/usr/share/apache-tomcat-7.0.64/bin/tomcat-juli.jar
-  Using CATALINA_BASE:   /usr/share/apache-tomcat-7.0.64
-  Using CATALINA_HOME:   /usr/share/apache-tomcat-7.0.64
-  Using CATALINA_TMPDIR: /usr/share/apache-tomcat-7.0.64/temp
-  Using JRE_HOME:        /usr/lib/jvm/java-7-sun
-  Using CLASSPATH:       /usr/share/apache-tomcat-7.0.64/bin/bootstrap.jar:/usr/share/apache-tomcat-7.0.64/bin/tomcat-juli.jar
-  Tomcat started.
-  
-  停止Tomcat
-  # service tomcat stop
-  Using CATALINA_BASE:   /usr/share/apache-tomcat-7.0.64
-  Using CATALINA_HOME:   /usr/share/apache-tomcat-7.0.64
-  Using CATALINA_TMPDIR: /usr/share/apache-tomcat-7.0.64/temp
-  Using JRE_HOME:        /usr/lib/jvm/java-7-sun
-  Using CLASSPATH:       /usr/share/apache-tomcat-7.0.64/bin/bootstrap.jar:/usr/share/apache-tomcat-7.0.64/bin/tomcat-juli.jar 
-
-  確認Tomcat log是否正確寫入
-  # more /usr/share/apache-tomcat-7.0.64/logs/catalina.out
-
-  確認可以正確看到Tomcat主頁
-  http://localhost:8080
+   確認可以正確看到Tomcat主頁
+   http://localhost:8080
 
