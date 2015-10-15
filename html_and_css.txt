@@ -54,3 +54,69 @@
 6. 屬性需要一個名稱和一個值
 ═════════════════════════════════════════════════════════════════════════════
 
+指定不同版本的HTML
+  HTML的演化
+  
+  HTML4    XHTML 1.0                                  HTML 5
+  1997     2000
+  release  release
+  ─────    ───────────────────────────────────────    ──────────────────────────
+           1. 因1998年，XML語言問世，HTML4重新規範
+              遵循XML的規則，並重新命名為XHTML。這
+              也意味著HTML的作者必須使用更新，更嚴
+              謹的規則來撰寫HTML
+           2. 以下列出幾項較常用到的規則
+              A. 所有元素都需要結束標記(除了<img />
+                 這樣的結束空白元素之外)
+              B. 屬性名稱必須小寫
+              C. 所有屬性都必須有一個值，所有的值也
+                 都必須放在雙引號內
+              D. 不該再使用被淘汰的元素
+              E. 在另一個元素內開頭的元素，都必須在
+                 同一個元素內結束
+           3. 為了幫助網頁作者轉換到新的語法，兩種
+              XHTML 1.0 被創造出來
+              A. 嚴謹型(strict) XHTML 1.0
+                 作者必須一字一句遵守規則
+              B. 轉換型(transitional) XHTML 1.0
+                 作者依然可以使用外觀元素，例如:
+                 <center>和<font>
+           4. 轉換型XHTML版本的設計用意是允許作者沿
+              用較舊的寫法(較不嚴謹語法)，和一些即將
+              被未來HTML版本移除的元素和屬性
+  
+DOCTYPES
+  因為HTML經歷了不同的版本，所以每個網頁一開始都應該要宣告DOCTYPE來告訴瀏覽器，該頁
+  使用的HTML版本(不過即使少了這項資訊，瀏覽器還是可以顯示網頁內容)。
+  以下為不同版本的宣告方式
+  
+  HTML 5
+  <!DOCTYPE html>
+  
+  HTML 4
+  <!DOCTYPE html PUBLIC
+    "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+  
+  Transitional XHTML 1.0
+  <!DOCTYPE html PUBLIC
+    "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/
+     xhtml1-transitional.dtd">
+  
+  Strict XHTML 1.0
+  <!DOCTYPE html PUBLIC
+    "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/
+     xhtml1-strict.dtd">
+  
+  XML Declaration
+  <?xml version="1.0" ?>
+  因為XHTML是用XML寫的，所以有時候可以看到使用XHTML strict DOCTYPE的網頁選擇性地以
+  XML宣告作為開頭.如果要使用XML宣告的話，必須將它放在文件的最開始，前面不能有任何東
+  西,即使是空格也不行。
+
+HTML裡的註解
+如果HTML作者想在原始碼中加入一段使用者瀏覽器看不到的註解,可以將文字加在這些字元之間:
+<!-- 文字放在這裡 -->
+
