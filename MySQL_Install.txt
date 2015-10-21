@@ -1,94 +1,95 @@
 建構MYSQL伺服器
 
-1. 安裝MYSQL Database
-＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
-｜[stephen@localhost ~]$ yum -y install mysql-server                                                  ｜
-｜Loaded plugins: fastestmirror, refresh-packagekit, security                                         ｜
-｜Loading mirror speeds from cached hostfile                                                          ｜
-｜ * base: ftp.cs.pu.edu.tw                                                                           ｜
-｜ * extras: ftp.cs.pu.edu.tw                                                                         ｜
-｜ * updates: ftp.cs.pu.edu.tw                                                                        ｜
-｜Setting up Install Process                                                                          ｜
-｜Resolving Dependencies                                                                              ｜
-｜--> Running transaction check                                                                       ｜
-｜---> Package mysql-server.i686 0:5.1.67-1.el6_3 will be installed                                   ｜
-｜--> Processing Dependency: mysql = 5.1.67-1.el6_3 for package: mysql-server-5.1.67-1.el6_3.i686     ｜
-｜--> Processing Dependency: perl-DBI for package: mysql-server-5.1.67-1.el6_3.i686                   ｜
-｜--> Processing Dependency: perl-DBD-MySQL for package: mysql-server-5.1.67-1.el6_3.i686             ｜
-｜--> Processing Dependency: perl(DBI) for package: mysql-server-5.1.67-1.el6_3.i686                  ｜
-｜--> Running transaction check                                                                       ｜
-｜---> Package mysql.i686 0:5.1.67-1.el6_3 will be installed                                          ｜
-｜--> Processing Dependency: mysql-libs = 5.1.67-1.el6_3 for package: mysql-5.1.67-1.el6_3.i686       ｜
-｜---> Package perl-DBD-MySQL.i686 0:4.013-3.el6 will be installed                                    ｜
-｜---> Package perl-DBI.i686 0:1.609-4.el6 will be installed                                          ｜
-｜--> Running transaction check                                                                       ｜
-｜---> Package mysql.i686 0:5.1.67-1.el6_3 will be installed                                          ｜
-｜--> Processing Dependency: mysql-libs = 5.1.67-1.el6_3 for package: mysql-5.1.67-1.el6_3.i686       ｜
-｜---> Package perl-DBD-MySQL.i686 0:4.013-3.el6 will be installed                                    ｜
-｜---> Package perl-DBI.i686 0:1.609-4.el6 will be installed                                          ｜
-｜--> Running transaction check                                                                       ｜
-｜---> Package mysql-libs.i686 0:5.1.61-4.el6 will be updated                                         ｜
-｜---> Package mysql-libs.i686 0:5.1.67-1.el6_3 will be an update                                     ｜
-｜--> Finished Dependency Resolution                                                                  ｜
-｜                                                                                                    ｜
-｜Dependencies Resolved                                                                               ｜
-｜                                                                                                    ｜
-｜================================================================================                    ｜
-｜ Package               Arch        Version                 Repository      Size                     ｜
-｜================================================================================                    ｜
-｜Installing:                                                                                         ｜
-｜ mysql-server          i686        5.1.67-1.el6_3          updates        8.8 M                     ｜
-｜Installing for dependencies:                                                                        ｜
-｜ mysql                 i686        5.1.67-1.el6_3          updates        896 k                     ｜
-｜ perl-DBD-MySQL        i686        4.013-3.el6             base           134 k                     ｜
-｜ perl-DBI              i686        1.609-4.el6             base           705 k                     ｜
-｜Updating for dependencies:                                                                          ｜
-｜ mysql-libs            i686        5.1.67-1.el6_3          updates        1.2 M                     ｜
-｜                                                                                                    ｜
-｜Transaction Summary                                                                                 ｜
-｜================================================================================                    ｜
-｜Install       4 Package(s)                                                                          ｜
-｜Upgrade       1 Package(s)                                                                          ｜
-｜                                                                                                    ｜
-｜Total download size: 12 M                                                                           ｜
-｜Downloading Packages:                                                                               ｜
-｜(1/5): mysql-5.1.67-1.el6_3.i686.rpm                     | 896 kB     00:00                         ｜
-｜(2/5): mysql-libs-5.1.67-1.el6_3.i686.rpm                | 1.2 MB     00:00                         ｜
-｜(3/5): mysql-server-5.1.67-1.el6_3.i686.rpm                                  | 8.8 MB     00:08     ｜
-｜(4/5): perl-DBD-MySQL-4.013-3.el6.i686.rpm                                   | 134 kB     00:00     ｜
-｜(5/5): perl-DBI-1.609-4.el6.i686.rpm                                         | 705 kB     00:00     ｜
-｜--------------------------------------------------------------------------------------------------- ｜
-｜Total                                                               1.1 MB/s |  12 MB     00:10     ｜
-｜Running rpm_check_debug                                                                             ｜
-｜Running Transaction Test                                                                            ｜
-｜Transaction Test Succeeded                                                                          ｜
-｜Running Transaction                                                                                 ｜
-｜  Updating   : mysql-libs-5.1.67-1.el6_3.i686                                                   1/6 ｜
-｜  Installing : perl-DBI-1.609-4.el6.i686                                                        2/6 ｜
-｜  Installing : perl-DBD-MySQL-4.013-3.el6.i686                                                  3/6 ｜
-｜  Installing : mysql-5.1.67-1.el6_3.i686                                                        4/6 ｜
-｜  Installing : mysql-server-5.1.67-1.el6_3.i686                                                 5/6 ｜
-｜  Cleanup    : mysql-libs-5.1.61-4.el6.i686                                                     6/6 ｜
-｜  Verifying  : mysql-5.1.67-1.el6_3.i686                                                        1/6 ｜
-｜  Verifying  : perl-DBD-MySQL-4.013-3.el6.i686                                                  2/6 ｜
-｜  Verifying  : mysql-server-5.1.67-1.el6_3.i686                                                 3/6 ｜
-｜  Verifying  : mysql-libs-5.1.67-1.el6_3.i686                                                   4/6 ｜
-｜  Verifying  : perl-DBI-1.609-4.el6.i686                                                        5/6 ｜
-｜  Verifying  : mysql-libs-5.1.61-4.el6.i686                                                     6/6 ｜
-｜                                                                                                    ｜
-｜Installed:                                                                                          ｜
-｜  mysql-server.i686 0:5.1.67-1.el6_3                                                                ｜
-｜                                                                                                    ｜
-｜Dependency Installed:                                                                               ｜
-｜  mysql.i686 0:5.1.67-1.el6_3    perl-DBD-MySQL.i686 0:4.013-3.el6    perl-DBI.i686 0:1.609-4.el6   ｜
-｜                                                                                                    ｜
-｜Dependency Updated:                                                                                 ｜
-｜  mysql-libs.i686 0:5.1.67-1.el6_3                                                                  ｜
-｜                                                                                                    ｜
-｜Complete!                                                                                           ｜
-｜                                                                                                  　｜
-＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
+MariaDB官方對於Redhat/CentOS/Fedora Linux發行版本，要安裝MariaDB，提供了Yellowdog Updater 
+Modified(YUM)的安裝方式。使用YUM的方式安裝，首先就要先配置repository configuration tool，
+而MariaDB也提供了MariaDB repository configuration tool的配置方式。
+┌─────────────────────────────────────────────────────────────────────────────────────┐
+│ https://downloads.mariadb.org/mariadb/repositories/#mirror=best                     │
+└─────────────────────────────────────────────────────────────────────────────────────┘
+於/etc/yum.repos.d/目錄下， 建立MariaDB.repo檔案， 內容如下:
+┌──────────────────────────────────────────────────────────────────────┐
+│ # MariaDB 10.1 CentOS repository list - created 2015-10-19 07:05 UTC │
+│ # http://mariadb.org/mariadb/repositories/                           │
+│ [mariadb]                                                            │
+│ name = MariaDB                                                       │
+│ baseurl = http://yum.mariadb.org/10.1/centos6-amd64                  │
+│ gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB                   │
+│ gpgcheck=1                                                           │
+└──────────────────────────────────────────────────────────────────────┘
 
+1. Installing MariaDB with YUM
+   ┌──────────────────────────────────────────────────────────────────────────────────┐
+   │[local@localhost ~]$ sudo yum install MariaDB-server MariaDB-client               │
+   │                                                                                  │
+   │Dependencies Resolved                                                             │
+   │                                                                                  │
+   │================================================================================  │
+   │ Package               Arch          Version               Repository      Size   │
+   │================================================================================  │
+   │Installing:                                                                       │
+   │ MariaDB-compat        x86_64        10.1.8-1.el6          mariadb        2.7 M   │
+   │     replacing  mysql-libs.x86_64 5.1.71-1.el6                                    │
+   │ MariaDB-server        x86_64        10.1.8-1.el6          mariadb        102 M   │
+   │Installing for dependencies:                                                      │
+   │ MariaDB-client        x86_64        10.1.8-1.el6          mariadb         40 M   │
+   │ MariaDB-common        x86_64        10.1.8-1.el6          mariadb         42 k   │
+   │ jemalloc              x86_64        3.6.0-1.el6           epel           100 k   │
+   │ perl-DBI              x86_64        1.609-4.el6           base           705 k   │
+   │                                                                                  │
+   │Transaction Summary                                                               │
+   │================================================================================  │
+   │Install       6 Package(s)                                                        │
+   │                                                                                  │
+   │Total download size: 145 M                                                        │
+   │Is this ok [y/N]: y                                                               │
+   │                                                                                  │
+   └──────────────────────────────────────────────────────────────────────────────────┘
+
+   After Installation
+   
+   After the installation completes， start MariaDB with:
+   sudo /etc/init.d/mysql start
+   If everything has gone well， we will see output similar to the following:
+   ┌──────────────────────────────────────────────────────────────────────────────────┐
+   │ [local@srv ~]$ sudo /etc/init.d/mysql start                                      │
+   │ Starting MySQL..                                           [  OK  ]              │
+   └──────────────────────────────────────────────────────────────────────────────────┘
+   Then we can quickly verify that MariaDB is up and running by opening a terminal or command-line window and running the following command:
+   mysql -u root -p 
+   or 
+   mysql -u root
+   This command connects to MariaDB as the root user (-u root) and prompts for the password of that user (-p). When prompted， we will type in the password
+   we configured during installation. If no password was set during installation， we without a password.
+   If MariaDB has been successfully installed and started， we should see something similar to the following screnshot when connecting using the previous command to launch the mysql command-line client
+[root@srv ~]# mysql -u root -p
+Enter password: 
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 3
+Server version: 10.1.8-MariaDB MariaDB Server
+
+Copyright (c) 2000， 2015， Oracle， MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> 
+MariaDB [(none)]> quit
+Bye
+[root@srv ~]# mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 4
+Server version: 10.1.8-MariaDB MariaDB Server
+
+Copyright (c) 2000， 2015， Oracle， MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> 
+
+Troubleshooting installation issues
+If we do happen to run into an issue when trying to start MariaDB， what should we do?
+The first thing we should do is look in the error log. The MariaDB error log is either stored with the system log file(for example， under /var/log/ on linux)
+or in the MariaDB data directory.
+   
 2. 配置 /etc/my.cnf
 // ================= 以下的修改執行後失敗，回復原狀後就成功啟動MYSQL了====================//
 為了方便管理，將DB FILE從預設的資料夾/var/lib/mysql 改放到/home/stephen/db/mysqldb下
@@ -125,7 +126,7 @@
 ＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
 ｜[root@localhost db]# chkconfig mysqld on                     <== 設定 MySQL 會隨系統自動啟動                ｜
 ｜[root@localhost db]# chkconfig --list | grep mysqld          <== 確認 MySQL 有自動啟動                      ｜
-｜mysqld         	0:off	1:off	2:on	3:on	4:on	5:on	6:off    <== 2 ~ 5 都為 on, 狀態就是正常  ｜
+｜mysqld         	0:off	1:off	2:on	3:on	4:on	5:on	6:off    <== 2 ~ 5 都為 on， 狀態就是正常  ｜
 ｜                                                                                                            ｜
 ＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
 
@@ -163,7 +164,7 @@ B.
 ｜Your MySQL connection id is 2                                                               ｜
 ｜Server version: 5.1.67 Source distribution                                                  ｜
 ｜                                                                                            ｜
-｜Copyright (c) 2000, 2012, Oracle and/or its affiliates. All rights reserved.                ｜
+｜Copyright (c) 2000， 2012， Oracle and/or its affiliates. All rights reserved.                ｜
 ｜                                                                                            ｜
 ｜Oracle is a registered trademark of Oracle Corporation and/or its                           ｜
 ｜affiliates. Other names may be trademarks of their respective                               ｜
@@ -172,7 +173,7 @@ B.
 ｜Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.              ｜
 ｜                                                                                            ｜
 ｜                                                                                            ｜
-｜mysql> select user,host,password from mysql.user;　     <== 查看帳號資訊                    ｜
+｜mysql> select user，host，password from mysql.user;　     <== 查看帳號資訊                    ｜
 ｜+------+-----------------------+----------+                                                 ｜
 ｜| user | host                  | password |                                                 ｜
 ｜+------+-----------------------+----------+                                                 ｜
@@ -186,15 +187,15 @@ B.
 ｜                                                                                            ｜
 ｜                                                                                            ｜
 ｜mysql> set password for root@localhost=password('admin');　 <== 設置root密碼                ｜
-｜Query OK, 0 rows affected (0.01 sec)                                                        ｜
+｜Query OK， 0 rows affected (0.01 sec)                                                        ｜
 ｜                                                                                            ｜
 ｜mysql> set password for root@'localhost.localdomain'=password('admin');　<== 設置root密碼   ｜
-｜Query OK, 0 rows affected (0.01 sec)                                                        ｜
+｜Query OK， 0 rows affected (0.01 sec)                                                        ｜
 ｜                                                                                            ｜
 ｜mysql> set password for root@'127.0.0.1'=password('admin');　 <== 設置root密碼              ｜
-｜Query OK, 0 rows affected (0.01 sec)                                                        ｜
+｜Query OK， 0 rows affected (0.01 sec)                                                        ｜
 ｜                                                                                            ｜
-｜mysql> select user,host,password from mysql.user;　 <== 查看帳號資訊                        ｜
+｜mysql> select user，host，password from mysql.user;　 <== 查看帳號資訊                        ｜
 ｜+------+-----------------------+-------------------------------------------+                ｜
 ｜| user | host                  | password                                  |                ｜
 ｜+------+-----------------------+-------------------------------------------+                ｜
@@ -228,7 +229,7 @@ B.
 ｜Your MySQL connection id is 7                                                           ｜
 ｜Server version: 5.1.67 Source distribution                                              ｜
 ｜                                                                                        ｜
-｜Copyright (c) 2000, 2012, Oracle and/or its affiliates. All rights reserved.            ｜
+｜Copyright (c) 2000， 2012， Oracle and/or its affiliates. All rights reserved.            ｜
 ｜                                                                                        ｜
 ｜Oracle is a registered trademark of Oracle Corporation and/or its                       ｜
 ｜affiliates. Other names may be trademarks of their respective                           ｜
@@ -251,7 +252,7 @@ MYSQL在安裝後會存在有帳號及密碼為空的帳號，為避免資料庫
 ｜Your MySQL connection id is 8                                                   ｜
 ｜Server version: 5.1.67 Source distribution                                      ｜
 ｜                                                                                ｜
-｜Copyright (c) 2000, 2012, Oracle and/or its affiliates. All rights reserved.    ｜
+｜Copyright (c) 2000， 2012， Oracle and/or its affiliates. All rights reserved.    ｜
 ｜                                                                                ｜
 ｜Oracle is a registered trademark of Oracle Corporation and/or its               ｜
 ｜affiliates. Other names may be trademarks of their respective                   ｜
@@ -259,7 +260,7 @@ MYSQL在安裝後會存在有帳號及密碼為空的帳號，為避免資料庫
 ｜                                                                                ｜
 ｜Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.  ｜
 ｜                                                                                ｜
-｜mysql> select user,host,password from mysql.user                                ｜
+｜mysql> select user，host，password from mysql.user                                ｜
 ｜    -> ;                                                                        ｜
 ｜+------+-----------------------+-------------------------------------------+    ｜
 ｜| user | host                  | password                                  |    ｜
@@ -273,9 +274,9 @@ MYSQL在安裝後會存在有帳號及密碼為空的帳號，為避免資料庫
 ｜5 rows in set (0.00 sec)                                                        ｜
 ｜                                                                                ｜
 ｜mysql> delete from mysql.user where user='';                                    ｜
-｜Query OK, 2 rows affected (0.04 sec)                                            ｜
+｜Query OK， 2 rows affected (0.04 sec)                                            ｜
 ｜                                                                                ｜
-｜mysql> select user,host,password from mysql.user;                               ｜
+｜mysql> select user，host，password from mysql.user;                               ｜
 ｜+------+-----------------------+-------------------------------------------+    ｜
 ｜| user | host                  | password                                  |    ｜
 ｜+------+-----------------------+-------------------------------------------+    ｜
@@ -300,7 +301,7 @@ MYSQL在安裝後，會存在一個名為test的空資料庫，可以將其刪�
 ｜3 rows in set (0.09 sec)              ｜
 ｜                                      ｜
 ｜mysql> drop database test;            ｜
-｜Query OK, 0 rows affected (0.19 sec)  ｜
+｜Query OK， 0 rows affected (0.19 sec)  ｜
 ｜                                      ｜
 ｜mysql> show databases;                ｜
 ｜+--------------------+                ｜
@@ -321,7 +322,7 @@ MYSQL在安裝後，會存在一個名為test的空資料庫，可以將其刪�
 ｜Your MySQL connection id is 8                                                       ｜
 ｜Server version: 5.1.67 Source distribution                                          ｜
 ｜                                                                                    ｜
-｜Copyright (c) 2000, 2012, Oracle and/or its affiliates. All rights reserved.        ｜
+｜Copyright (c) 2000， 2012， Oracle and/or its affiliates. All rights reserved.        ｜
 ｜                                                                                    ｜
 ｜Oracle is a registered trademark of Oracle Corporation and/or its                   ｜
 ｜affiliates. Other names may be trademarks of their respective                       ｜
@@ -330,9 +331,9 @@ MYSQL在安裝後，會存在一個名為test的空資料庫，可以將其刪�
 ｜Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.      ｜
 ｜                                                                                    ｜
 ｜mysql> grant all privileges on test.* to javauser@localhost identified by '密碼';   ｜
-｜Query OK, 0 rows affected (0.01 sec)                                                ｜
+｜Query OK， 0 rows affected (0.01 sec)                                                ｜
 ｜                                                                                    ｜
-｜mysql> select user,host,password from mysql.user;                                   ｜
+｜mysql> select user，host，password from mysql.user;                                   ｜
 ｜+----------+-----------------------+-------------------------------------------+    ｜
 ｜| user     | host                  | password                                  |    ｜
 ｜+----------+-----------------------+-------------------------------------------+    ｜
@@ -354,7 +355,7 @@ MYSQL在安裝後，會存在一個名為test的空資料庫，可以將其刪�
 ｜Your MySQL connection id is 9                                                    ｜
 ｜Server version: 5.1.67 Source distribution                                       ｜
 ｜                                                                                 ｜
-｜Copyright (c) 2000, 2012, Oracle and/or its affiliates. All rights reserved.     ｜
+｜Copyright (c) 2000， 2012， Oracle and/or its affiliates. All rights reserved.     ｜
 ｜                                                                                 ｜
 ｜Oracle is a registered trademark of Oracle Corporation and/or its                ｜
 ｜affiliates. Other names may be trademarks of their respective                    ｜
@@ -363,7 +364,7 @@ MYSQL在安裝後，會存在一個名為test的空資料庫，可以將其刪�
 ｜Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.   ｜
 ｜                                                                                 ｜
 ｜mysql> create database test;                                                     ｜
-｜Query OK, 1 row affected (0.00 sec)                                              ｜
+｜Query OK， 1 row affected (0.00 sec)                                              ｜
 ｜                                                                                 ｜
 ｜mysql> show databases;                                                           ｜
 ｜+--------------------+                                                           ｜
@@ -376,8 +377,8 @@ MYSQL在安裝後，會存在一個名為test的空資料庫，可以將其刪�
 ｜                                                                                 ｜
 ｜mysql> use test                                                                  ｜
 ｜Database changed                                                                 ｜
-｜mysql> create table test(num int,name varchar(50));                              ｜
-｜Query OK, 0 rows affected (0.09 sec)                                             ｜
+｜mysql> create table test(num int，name varchar(50));                              ｜
+｜Query OK， 0 rows affected (0.09 sec)                                             ｜
 ｜                                                                                 ｜
 ｜mysql> show tables;                                                              ｜
 ｜+----------------+                                                               ｜
@@ -389,8 +390,8 @@ MYSQL在安裝後，會存在一個名為test的空資料庫，可以將其刪�
 ＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－-－－＋
 
 ＋－－－－－－－－｜為test Table建立一筆資料｜－－－－－＋
-｜mysql> insert into test values(1,'Hello World!');     ｜
-｜Query OK, 1 row affected (0.00 sec)                   ｜
+｜mysql> insert into test values(1，'Hello World!');     ｜
+｜Query OK， 1 row affected (0.00 sec)                   ｜
 ｜                                                      ｜
 ｜mysql> select * from test;                            ｜
 ｜+------+--------------+                               ｜
@@ -401,7 +402,7 @@ MYSQL在安裝後，會存在一個名為test的空資料庫，可以將其刪�
 ｜1 row in set (0.00 sec)                               ｜
 ｜                                                      ｜
 ｜mysql> update test set name='Hello Everyone!';        ｜
-｜Query OK, 1 row affected (0.00 sec)                   ｜
+｜Query OK， 1 row affected (0.00 sec)                   ｜
 ｜Rows matched: 1  Changed: 1  Warnings: 0              ｜
 ｜                                                      ｜
 ｜mysql> select * from test;                            ｜
@@ -413,19 +414,19 @@ MYSQL在安裝後，會存在一個名為test的空資料庫，可以將其刪�
 ｜1 row in set (0.00 sec)                               ｜
 ｜                                                      ｜
 ｜mysql> delete from test where num=1;                  ｜
-｜Query OK, 1 row affected (0.00 sec)                   ｜
+｜Query OK， 1 row affected (0.00 sec)                   ｜
 ｜                                                      ｜
 ｜mysql> select * from test;                            ｜
 ｜Empty set (0.00 sec)                                  ｜
 ｜                                                      ｜
 ｜mysql> drop table test;                               ｜
-｜Query OK, 0 rows affected (0.00 sec)                  ｜
+｜Query OK， 0 rows affected (0.00 sec)                  ｜
 ｜                                                      ｜
 ｜mysql> show tables;                                   ｜
 ｜Empty set (0.00 sec)                                  ｜
 ｜                                                      ｜
 ｜mysql> drop database test;                            ｜
-｜Query OK, 0 rows affected (0.00 sec)                  ｜
+｜Query OK， 0 rows affected (0.00 sec)                  ｜
 ｜                                                      ｜
 ｜mysql> show databases;                                ｜
 ｜+--------------------+                                ｜
@@ -446,7 +447,7 @@ MYSQL在安裝後，會存在一個名為test的空資料庫，可以將其刪�
 ｜Your MySQL connection id is 10                                                ｜
 ｜Server version: 5.1.67 Source distribution                                    ｜
 ｜                                                                              ｜
-｜Copyright (c) 2000, 2012, Oracle and/or its affiliates. All rights reserved.  ｜
+｜Copyright (c) 2000， 2012， Oracle and/or its affiliates. All rights reserved.  ｜
 ｜                                                                              ｜
 ｜Oracle is a registered trademark of Oracle Corporation and/or its             ｜
 ｜affiliates. Other names may be trademarks of their respective                 ｜
@@ -455,16 +456,16 @@ MYSQL在安裝後，會存在一個名為test的空資料庫，可以將其刪�
 ｜Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.｜
 ｜                                                                              ｜
 ｜mysql> revoke all privileges on *.* from javauser@localhost;                  ｜
-｜Query OK, 0 rows affected (0.00 sec)                                          ｜
+｜Query OK， 0 rows affected (0.00 sec)                                          ｜
 ｜                                                                              ｜
 ｜mysql> delete from mysql.user where user='javauser' and host='localhost';     ｜
-｜Query OK, 1 row affected (0.00 sec)                                           ｜
+｜Query OK， 1 row affected (0.00 sec)                                           ｜
 ｜                                                                              ｜
 ｜mysql> select user from mysql.user where user='javauser';                     ｜
 ｜Empty set (0.00 sec)                                                          ｜
 ｜                                                                              ｜
 ｜mysql> flush privileges;                                                      ｜
-｜Query OK, 0 rows affected (0.00 sec)                                          ｜
+｜Query OK， 0 rows affected (0.00 sec)                                          ｜
 ｜                                                                              ｜
 ｜mysql> exit;                                                                  ｜
 ｜Bye                                                                           ｜
@@ -474,7 +475,7 @@ MYSQL在安裝後，會存在一個名為test的空資料庫，可以將其刪�
 ＋－－－－－－－－－－－－－－｜重新啟動 Httpservice｜－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
 ｜[root@localhost stephen]# /etc/rc.d/init.d/httpd restart                                                          ｜
 ｜Stopping httpd:                                            [FAILED]                                               ｜
-｜Starting httpd: httpd: Could not reliably determine the server's fully qualified domain name, using localhost.    ｜
+｜Starting httpd: httpd: Could not reliably determine the server's fully qualified domain name， using localhost.    ｜
 ｜ localdomain for ServerName                                                                                       ｜
 ｜                                                           [  OK  ]                                               ｜
 ＋－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－＋
