@@ -1,12 +1,13 @@
 建構MYSQL伺服器
 
-MariaDB官方對於Redhat/CentOS/Fedora Linux發行版本，要安裝MariaDB，提供了Yellowdog Updater 
-Modified(YUM)的安裝方式。使用YUM的方式安裝，首先就要先配置repository configuration tool，
-而MariaDB也提供了MariaDB repository configuration tool的配置方式。
-┌─────────────────────────────────────────────────────────────────────────────────────┐
-│ https://downloads.mariadb.org/mariadb/repositories/#mirror=best                     │
-└─────────────────────────────────────────────────────────────────────────────────────┘
-於/etc/yum.repos.d/目錄下， 建立MariaDB.repo檔案， 內容如下:
+MariaDB官方對於Redhat/CentOS/Fedora Linux發行版本，要安裝MariaDB，提供了
+Yellowdog Updater Modified(YUM)的安裝方式。使用YUM的方式安裝，首先就要先配置
+repository configuration tool，而MariaDB也提供了MariaDB repository configuration 
+tool的配置方式。
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ https://downloads.mariadb.org/mariadb/repositories/#mirror=best              │
+└──────────────────────────────────────────────────────────────────────────────┘
+於/etc/yum.repos.d/目錄下，建立MariaDB.repo檔案，內容如下:
 ┌──────────────────────────────────────────────────────────────────────┐
 │ # MariaDB 10.1 CentOS repository list - created 2015-10-19 07:05 UTC │
 │ # http://mariadb.org/mariadb/repositories/                           │
@@ -18,78 +19,117 @@ Modified(YUM)的安裝方式。使用YUM的方式安裝，首先就要先配置r
 └──────────────────────────────────────────────────────────────────────┘
 
 1. Installing MariaDB with YUM
-   ┌──────────────────────────────────────────────────────────────────────────────────┐
-   │[local@localhost ~]$ sudo yum install MariaDB-server MariaDB-client               │
-   │                                                                                  │
-   │Dependencies Resolved                                                             │
-   │                                                                                  │
-   │================================================================================  │
-   │ Package               Arch          Version               Repository      Size   │
-   │================================================================================  │
-   │Installing:                                                                       │
-   │ MariaDB-compat        x86_64        10.1.8-1.el6          mariadb        2.7 M   │
-   │     replacing  mysql-libs.x86_64 5.1.71-1.el6                                    │
-   │ MariaDB-server        x86_64        10.1.8-1.el6          mariadb        102 M   │
-   │Installing for dependencies:                                                      │
-   │ MariaDB-client        x86_64        10.1.8-1.el6          mariadb         40 M   │
-   │ MariaDB-common        x86_64        10.1.8-1.el6          mariadb         42 k   │
-   │ jemalloc              x86_64        3.6.0-1.el6           epel           100 k   │
-   │ perl-DBI              x86_64        1.609-4.el6           base           705 k   │
-   │                                                                                  │
-   │Transaction Summary                                                               │
-   │================================================================================  │
-   │Install       6 Package(s)                                                        │
-   │                                                                                  │
-   │Total download size: 145 M                                                        │
-   │Is this ok [y/N]: y                                                               │
-   │                                                                                  │
-   └──────────────────────────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────────────┐
+│[local@localhost ~]$ sudo yum install MariaDB-server MariaDB-client             │
+│                                                                                │
+│Dependencies Resolved                                                           │
+│                                                                                │
+│================================================================================│
+│ Package               Arch          Version               Repository      Size │
+│================================================================================│
+│Installing:                                                                     │
+│ MariaDB-compat        x86_64        10.1.8-1.el6          mariadb        2.7 M │
+│     replacing  mysql-libs.x86_64 5.1.71-1.el6                                  │
+│ MariaDB-server        x86_64        10.1.8-1.el6          mariadb        102 M │
+│Installing for dependencies:                                                    │
+│ MariaDB-client        x86_64        10.1.8-1.el6          mariadb         40 M │
+│ MariaDB-common        x86_64        10.1.8-1.el6          mariadb         42 k │
+│ jemalloc              x86_64        3.6.0-1.el6           epel           100 k │
+│ perl-DBI              x86_64        1.609-4.el6           base           705 k │
+│                                                                                │
+│Transaction Summary                                                             │
+│================================================================================│
+│Install       6 Package(s)                                                      │
+│                                                                                │
+│Total download size: 145 M                                                      │
+│Is this ok [y/N]: y                                                             │
+│                                                                                │
+└────────────────────────────────────────────────────────────────────────────────┘
 
-   After Installation
+  1.1. After Installation
+       After the installation completes， start MariaDB with:
+       sudo /etc/init.d/mysql start
+       If everything has gone well, we will see output similar to the following:
+       ┌───────────────────────────────────────────────────────────────────────┐
+       │ [local@srv ~]$ sudo /etc/init.d/mysql start                           │
+       │ Starting MySQL..                                       [  OK  ]       │
+       └───────────────────────────────────────────────────────────────────────┘
    
-   After the installation completes， start MariaDB with:
-   sudo /etc/init.d/mysql start
-   If everything has gone well， we will see output similar to the following:
-   ┌──────────────────────────────────────────────────────────────────────────────────┐
-   │ [local@srv ~]$ sudo /etc/init.d/mysql start                                      │
-   │ Starting MySQL..                                           [  OK  ]              │
-   └──────────────────────────────────────────────────────────────────────────────────┘
-   Then we can quickly verify that MariaDB is up and running by opening a terminal or command-line window and running the following command:
-   mysql -u root -p 
-   or 
-   mysql -u root
-   This command connects to MariaDB as the root user (-u root) and prompts for the password of that user (-p). When prompted， we will type in the password
-   we configured during installation. If no password was set during installation， we without a password.
-   If MariaDB has been successfully installed and started， we should see something similar to the following screnshot when connecting using the previous command to launch the mysql command-line client
-[root@srv ~]# mysql -u root -p
-Enter password: 
-Welcome to the MariaDB monitor.  Commands end with ; or \g.
-Your MariaDB connection id is 3
-Server version: 10.1.8-MariaDB MariaDB Server
+       Then we can quickly verify that MariaDB is up and running by opening a 
+       terminal or command-line window and running the following command:
+       mysql -u root -p 
+       or 
+       mysql -u root
+       This command connects to MariaDB as the root user (-u root) and prompts 
+       for the password of that user (-p). When prompted, we will type in the 
+       password we configured during installation. If no password was set during 
+       installation, we without a password.
+       If MariaDB has been successfully installed and started, we should see 
+       something similar to the following screnshot when connecting using the 
+       previous command to launch the mysql command-line client.
+┌────────────────────────────────────────────────────────────────────────────────┐
+│[root@srv ~]# mysql -u root -p                                                  │
+│Enter password:                                                                 │
+│Welcome to the MariaDB monitor.  Commands end with ; or \g.                     │
+│Your MariaDB connection id is 3                                                 │
+│Server version: 10.1.8-MariaDB MariaDB Server                                   │
+│                                                                                │
+│Copyright (c) 2000， 2015， Oracle， MariaDB Corporation Ab and others.         │
+│                                                                                │
+│Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.  │
+│                                                                                │
+│MariaDB [(none)]>                                                               │
+│MariaDB [(none)]> quit                                                          │
+│Bye                                                                             │
+└────────────────────────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────────────┐
+│[root@srv ~]# mysql -u root                                                     │
+│Welcome to the MariaDB monitor.  Commands end with ; or \g.                     │
+│Your MariaDB connection id is 4                                                 │
+│Server version: 10.1.8-MariaDB MariaDB Server                                   │
+│                                                                                │
+│Copyright (c) 2000， 2015， Oracle， MariaDB Corporation Ab and others.         │
+│                                                                                │
+│Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.  │
+│                                                                                │
+│MariaDB [(none)]>                                                               │
+└────────────────────────────────────────────────────────────────────────────────┘
+  
+  1.2. Troubleshooting installation issues
+       If we do happen to run into an issue when trying to start MariaDB, what 
+       should we do? The first thing we should do is look in the error log. The 
+       MariaDB error log is either stored with the system log file(for example, 
+       under /var/log/ on linux)or in the MariaDB data directory.
 
-Copyright (c) 2000， 2015， Oracle， MariaDB Corporation Ab and others.
-
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-
-MariaDB [(none)]> 
-MariaDB [(none)]> quit
-Bye
-[root@srv ~]# mysql -u root
-Welcome to the MariaDB monitor.  Commands end with ; or \g.
-Your MariaDB connection id is 4
-Server version: 10.1.8-MariaDB MariaDB Server
-
-Copyright (c) 2000， 2015， Oracle， MariaDB Corporation Ab and others.
-
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-
-MariaDB [(none)]> 
-
-Troubleshooting installation issues
-If we do happen to run into an issue when trying to start MariaDB， what should we do?
-The first thing we should do is look in the error log. The MariaDB error log is either stored with the system log file(for example， under /var/log/ on linux)
-or in the MariaDB data directory.
+2. The MariaDB filesystem layout on Linux
+   MariaDB的檔案系統主要還是遵循Linux系統的原則。例如:
+   /usr/bin 放置MariaDB binary files
+   /usr/lib 放置libraries
+   /usr/share/man 放置manual pages
+   除了以上三個部分, 其他的部分, 描述如下:
    
+   /usr/share/mysql         這個目錄只要知道它包括了一些重要檔案, 
+                            例如: 系統初始化的一些scripts, 還有字元集即可
+   /var/lib/mysql           這個目錄是系統預設存放database file和相關log檔的地方
+   /usr/lib/mysql/plugin    這個目錄是MariaDB放plugins的地方.而這個目錄會依不同版
+                            本的linux系統而有不同.
+                            Debian/Ubuntu            /usr/lib/mysql/plugin/
+                            Fedora/Red hat/CentOS    會依32 bit或64 bit的不同而有
+                                                     差別
+                                                     /lib64/mysql/plugin
+                                                     /lib/mysql/plugin
+   /etc/mysql               這是MariaDB存放配置資訊的地方.需要特別注意以下兩個地
+                            方.
+                            Debian/Ubuntu
+                            /etc/mysql/my.cnf
+                            /etc/mysql/conf.d/
+
+                            Fedora/Red hat/CentOS
+                            /etc/my.cnf
+                            /etc/my.conf.d/
+
+
+
 2. 配置 /etc/my.cnf
 // ================= 以下的修改執行後失敗，回復原狀後就成功啟動MYSQL了====================//
 為了方便管理，將DB FILE從預設的資料夾/var/lib/mysql 改放到/home/stephen/db/mysqldb下
