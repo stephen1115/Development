@@ -2,6 +2,21 @@
    #wget http://eclipse.stu.edu.tw/technology/epp/downloads/release/juno/SR1/eclipse-jee-juno-SR1-linux-gtk.tar.gz
 
 2. sudo tar xvzf eclipse-jee-juno-SR1-linux-gtk.tar.gz -C /opt
+/bin
+ 
+系統有很多放置執行檔的目錄，但/bin比較特殊。因為/bin放置的是在單人維護模式下還能夠被操作的指令。 
+在/bin底下的指令可以被root與一般帳號所使用，主要有：cat, chmod, chown, date, mv, mkdir, cp, bash等等常用的指令。
+ 
+/opt
+這個是給第三方協力軟體放置的目錄。什麼是第三方協力軟體啊？ 舉例來說，KDE這個桌面管理系統是一個獨立的計畫，
+不過他可以安裝到Linux系統中，因此KDE的軟體就建議放置到此目錄下了。 另外，如果妳想要自行安裝額外的軟體(非原本的distribution提供的)，
+那麼也能夠將你的軟體安裝到這裡來。 不過，以前的Linux系統中，我們還是習慣放置在/usr/local目錄下呢！
+ 
+/usr/local/
+系統管理員在本機自行安裝自己下載的軟體(非distribution預設提供者)，建議安裝到此目錄， 這樣會比較便於管理。
+舉例來說，你的distribution提供的軟體較舊，你想安裝較新的軟體但又不想移除舊版， 此時你可以將新版軟體安裝於/usr/local/目錄下，
+可與原先的舊版軟體有分別啦！ 你可以自行到/usr/local去看看，該目錄下也是具有bin, etc, include, lib…的次目錄喔！
+
 
 3. 為Eclipse建立桌面捷徑
    3.1. 於桌面空白處按鼠標右鍵，選擇[Create Launcher]
