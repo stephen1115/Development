@@ -1,0 +1,216 @@
+Nexus 安裝配置
+1. 環境說明
+   CentOS 6.5
+   Apache Maven 3.3.9
+   Nexus－2.11.4－01－bundle
+
+2. 下載網址
+   MAVEN
+   http://apache.stu.edu.tw/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
+
+   Nexus 2.11.4－01
+   http://www.sonatype.org/nexus/archived/?id=38
+
+3. 安裝Maven
+   3.1. # sudo tar －zxvf  apache-maven-3.3.9-bin.tar.gz -C /opt
+        若之後還有計劃安裝Nexus server，建議安裝在/opt/maven 底下，原因是方便統一管理，
+        並且Nexus解開後會産生2個目錄，散在/opt底下，不好管理
+   3.2. edit /etc/profile
+        # sudo vim /etc/profile
+        export MAVEN_HOME=/opt/apache-maven-3.3.9
+        export PATH=${PATH}:${MAVEN_HOME}/bin
+        
+        # source /etc/profile
+        或
+        edit /etc/profile.d/maven.h
+        export M2_HOME=/opt/apache-maven-3.3.9
+        export M2=${M2_HOME}/bin
+        export PATH=${PATH}:${MAVEN_HOME}/bin
+
+   3.3. 驗證是否安裝成功
+        # mvn --version
+        Apache Maven 3.3.9 (bb52d8502b132ec0a5a3f4c09453c07478323dc5; 2015-11-11T00:41:47+08:00)
+        Maven home: /opt/apache-maven-3.3.9
+        Java version: 1.7.0_79, vendor: Oracle Corporation
+        Java home: /usr/lib/jvm/java-7-sun/jre
+        Default locale: en_US, platform encoding: UTF-8
+        OS name: "linux", version: "2.6.32-504.12.2.el6.x86_64", arch: "amd64", family: "unix"
+
+4. 搭建Nexus server
+   4.1. ＃sudo tar -zxvf nexus-2.11.4-01-bundle.tar.gz -C /opt
+        檔案解開後會看到2個目錄：nexus-2.11.4-01及sonatype-work
+        前者包含了Nexus的執行環境及應用程式，而後者則是包含了配置檔和一些數據
+   4.2. 進入/opt/maven/nexus-2.11.4-01/bin, 執行./nexus start，會看到以下錯誤訊息
+        [stephen@srv bin]$ ./nexus start
+        Starting Nexus OSS...
+        Failed to start Nexus OSS. 
+        只看到錯誤訊息，但看不出為什麼錯誤，這時可以使用另外一個命令來看到啟動時的錯誤訊息內容
+        [stephen@srv bin]$ ./nexus console
+        Running Nexus OSS...
+        wrapper  | ERROR: Could not write pid file
+        /opt/maven/nexus-2.11.4-01/bin/../bin/jsw/linux-x86-64/nexus.pid: Permission denied
+        Unable to open logfile logs/wrapper.log: Permission denied
+        這𥚃出現一個權限問題，原因在於/opt底下只有root俱備寫入權限，而Nexus啟動時會産生nexux.pid檔案就會造成權限問題，
+        但若要以root身份啟動Nexus，則會出現以下訊息
+        [root@srv bin]# ./nexus start
+        ****************************************
+        WARNING - NOT RECOMMENDED TO RUN AS ROOT
+        ****************************************
+        If you insist running as root, then set the environment variable
+        RUN_AS_USER=root before running this script.
+        為以上問題，利用建立新的使用者帳號，nexus，來解決。
+        4.2.1. 建立新使用者帳號，nexus
+               [root@srv ~]# useradd nexus;echo "nexus" | passwd nexus --stdin
+               於nexus的家目錄下建立piddir目錄來存放nexus啟動時産生的nexus.pid檔案
+        4.2.2. 回到/opt/mave/nexus-2.11.4-01/bin目錄下，修改nexus檔案內容
+               NEXUS_HOME="/opt/maven/nexus-2.11.4-01"
+               RUN_AS_USER=nexus
+               PIDDIR="/home/nexus/piddir"
+  4.3. 至此，權限問題算是解決，所以可以啟動一下Nexus，確認是否能正確啟動
+       [stephen@srv bin]$ ./nexus start
+       Password: 
+       Starting Nexus OSS...
+       Started Nexus OSS.
+       這𥚃要留意一下，Nexus會自動幫我們做su - nexus，因此密碼是要輸入使用者nexus的密碼,
+       看到啟動的訊息，但是還是想看一下是否真的啟動成功，所以,換./nexus stop 執行看看會不會有問題
+       [stephen@srv bin]$ ./nexus stop
+       Password: 
+       Stopping Nexus OSS...
+       Nexus OSS was not running.
+       [stephen@srv bin]$ ./nexus console
+       Password: 
+       Running Nexus OSS...
+       wrapper  | --> Wrapper Started as Console
+       Unable to open logfile logs/wrapper.log: Permission denied
+       wrapper  | Launching a JVM...
+       Unable to open logfile logs/wrapper.log: Permission denied
+       。。。。。以下省略
+       果然是看到了其他錯誤訊息
+       log檔案寫入權限不足，存放log的子目錄位於/opt/maven/nexus-2.11.4-01/logs, 其權限如下
+       drwxr-xr-x. 2 root root  4096 Jul 10 08:13 logs
+       帳號nexus並不俱備寫入權限，解決方法便是修改該目錄的寫入權限，直接將該目錄的擁有者改為nexus
+       [root@srv nexus-2.11.4-01]# chown nexus:nexus logs
+       再次確認是否修改成功
+       drwxr-xr-x. 2 nexus nexus  4096 Jul 10 08:13 logs
+       再次啟動nexus 服務
+       [stephen@srv bin]$ ./nexus console
+       Password: 
+       Running Nexus OSS...
+       wrapper  | --> Wrapper Started as Console
+       wrapper  | Launching a JVM...
+       jvm 1    | Wrapper (Version 3.2.3) http://wrapper.tanukisoftware.org
+       jvm 1    |   Copyright 1999-2006 Tanuki Software, Inc.  All Rights Reserved.
+       jvm 1    | 
+       。。。。。以下省略
+       jvm 1    | java.nio.file.AccessDeniedException:./tmp/nexus-tmpdir868485991066138301.tmp
+       jvm 1    | 	at sun.nio.fs.UnixException.translateToIOException(UnixException.java:84) ~[na:1.7.0_79]
+       jvm 1    | 	at sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:102) ~[na:1.7.0_79]
+       jvm 1    | 	at sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:107) ~[na:1.7.0_79]
+       jvm 1    | 	at sun.nio.fs.UnixFileSystemProvider.newByteChannel(UnixFileSystemProvider.java:214) ~[na:1.7.0_79]
+       。。。。。以下省略
+  4.4. 再次出現錯誤，錯誤的原因是tmp子目錄的寫入權限不足，解決方法如同logs子目錄寫入權限不足的方法一樣
+       [root@srv nexus-2.11.4-01]# chown nexus:nexus tmp
+       [stephen@srv bin]$ ./nexus console
+       Password:
+       Running Nexus OSS...
+       wrapper  | --> Wrapper Started as Console
+       wrapper  | Launching a JVM...
+       jvm 1    | Wrapper (Version 3.2.3) http://wrapper.tanukisoftware.org
+       jvm 1    |   Copyright 1999-2006 Tanuki Software, Inc.  All Rights Reserved.
+       jvm 1    |
+       。。。。。以下省略
+       jvm 1    | 2015-11-19 21:22:08,683+0800 ERROR [WrapperListener_start_runner] *SYSTEM org.sonatype.nexus.bootstrap.jsw.JswLauncher - Failed to start
+       jvm 1    | java.lang.IllegalStateException: Nexus work directory already in use: /opt/maven/sonatype-work/nexus
+       jvm 1    | 	at com.google.common.base.Preconditions.checkState(Preconditions.java:200) ~[na:na]
+       jvm 1    | 	at org.sonatype.nexus.webapp.WebappBootstrap.contextInitialized(WebappBootstrap.java:117) ~[na:na]
+  4.5. 這次出現的錯誤訊息和之前不一樣了，Nexus work directory already in use: /opt/maven/sonatype-work/nexus
+       work directory被佔用，其實想不透為何會有目錄被佔用的情況，所以直接先看一下/opt/maven/sonatype-work/nexus是否也有權限不足的問題
+       [root@srv ~]# ls -ld /opt/maven/sonatype-work/nexus
+       drwxr-xr-x. 2 root root 4096 Jul 10 08:13 /opt/maven/sonatype-work/nexus
+       看起來仍然是權限的問題，按之前的解決方式，直接修改其權限
+       [root@srv ~]# chown nexus:nexus /opt/maven/sonatype-work/nexus
+       [root@srv ~]# ls -ld /opt/maven/sonatype-work/nexus
+       drwxr-xr-x. 2 nexus nexus 4096 Jul 10 08:13 /opt/maven/sonatype-work/nexu
+       再次啟動nexus服務確認是否能正確啟動
+       [stephen@srv bin]$ ./nexus console
+Password: 
+Running Nexus OSS...
+wrapper  | --> Wrapper Started as Console
+wrapper  | Launching a JVM...
+。。。。。以下省略
+確認沒問題後，可以直接ctrl ＋ c 終止程式，然後執行./nexus stop
+正式來啟動nexus服務
+[stephen@srv bin]$ ./nexus start
+Password: 
+Starting Nexus OSS...
+Started Nexus OSS.
+[stephen@srv bin]$ 
+服務啟動完成後，使用Browser訪問 http://server-host:8081/nexus
+系統預設管理員帳號密碼 admin/admin123
+         
+若要查看曰誌
+cat /opt/maven/nexus-2.11.4-01/logs/wrapper.log
+若要修改端口
+cat nexus.properties
+
+Configuring Nexus as a Service
+http://books.sonatype.com/nexus-book/reference/install-sect-service.html
+
+Running as a Service on Linux
+
+You can configure Nexus to start automatically by copying the nexus script to
+the /etc/init.d directory. On a Linux system perform the following operations
+as the root user:
+
+    Create a nexus user with sufficient access rights to run the service
+    Copy $NEXUS_HOME/bin/nexus to /etc/init.d/nexus
+
+    Make the /etc/init.d/nexus script executable and owned by the root user -
+
+    chmod 755 /etc/init.d/nexus
+    chown root /etc/init.d/nexus
+
+    Edit this script changing the following variables:
+        Change NEXUS_HOME to the absolute folder location (e.g.,
+NEXUS_HOME="/usr/local/nexus")
+        Set the RUN_AS_USER to nexus or any other user with restricted rights
+that you want to use to run the service. You should not be running Nexus as
+root.
+        Change PIDDIR to a directory where this user has read/write
+permissions. In most Linux distributions, /var/run is only writable by root.
+The property you need to add to customize the PID file location is
+wrapper.pidfile. For more information about this property and how it would be
+configured in wrapper.conf, see:
+http://wrapper.tanukisoftware.com/doc/english/properties.html.
+    Change the owner and group of your Nexus-related directories, including
+nexus-work configured in nexus.properties defaulting to sonatype-work/nexus,
+to the nexus user that will run the application.
+    If Java is not on the default path for the user running Nexus, add a
+JAVA_HOME variable which points to your local Java installation and add a
+$JAVA_HOME/bin to the PATH.
+
+Add Nexus as a Service on Red Hat, Fedora, and CentOS
+
+This script has the appropriate chkconfig directives, so all you need to do to
+add Nexus as a service is run the following commands:
+
+$ cd /etc/init.d
+$ chkconfig --add nexus
+$ chkconfig --levels 345 nexus on
+$ service nexus start
+Starting Sonatype Nexus...
+$ tail -f /usr/local/nexus/logs/wrapper.log
+
+The second command adds nexus as a service to be started and stopped with the
+service command. chkconfig manages the symbolic links in /etc/rc[0-6].d which
+control the services to be started and stopped when the operating system
+restarts or transitions between run-levels. The third command adds nexus to
+run-levels 3, 4, and 5. The service command starts Nexus, and the last command
+tails the wrapper.log to verify that Nexus has been started successfully. If
+Nexus has started successfully, you should see a message notifying you that
+Nexus is listening for HTTP.
+
+
+  
+
+
