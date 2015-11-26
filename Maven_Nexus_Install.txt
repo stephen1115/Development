@@ -22,7 +22,7 @@ Nexus 安裝配置
         
         # source /etc/profile
         或
-        edit /etc/profile.d/maven.h
+        edit /etc/profile.d/maven.sh
         export M2_HOME=/opt/apache-maven-3.3.9
         export M2=${M2_HOME}/bin
         export PATH=${PATH}:${MAVEN_HOME}/bin
