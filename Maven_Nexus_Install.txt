@@ -226,12 +226,48 @@ group     倉庫組，  主要用來合併多個hosted/proxy倉庫，當專案�
                  Central 倉庫的簡易配置
                  1. 點擊Configuration
                  2. Repository Policy 設定為Release
-                 3. Remote Storage Location 爲遠程倉庫地址，https://repo1.maven.org/maven2/
+                 3. Override local storage location 允許配置Nexus本地倉庫的存放位置，用來覆蓋其預設的存放位置
+                 3. Remote Storage Location 允許配置遠程倉庫的位置。通常為了提高代理速度，可以將其修改為國內的鏡像位置。
+                                            預設值是https://repo1.maven.org/maven2/
                  4. Download Remote Indexes 是否下載遠程索引文件，默認爲False，（中央倉庫有大量的Component，其索引文件也很大，
                     容易消耗大量的中央倉庫網路頻寬）。將其設置爲True（其他代理倉庫也需要一併改成True），然後點擊Save。
                     在Nexus下載中央倉庫的索引文件之後，我們就可以在本地搜索中央倉庫的所有Component。
 
-3rd party：策略为Release，用来部署无法从中央仓库获得第三方发布构建版本。
+配置代理倉庫(proxy)
+Nexus預設提供了Maven
+central這個代理倉庫，若有需要新增其他代理倉庫，可以點擊左側畫面Repositories 後，
+然後在右側 依序點擊add --> add proxy repository,
+再按畫面上的欄位填寫必要資訊後儲存即可。
+
+配置本地倉庫(hosted)
+Nexus的本地倉庫定義了三種類型，分別是Releases，Snapshots，3rd Party
+Releases 存放穩定版本的套件。例如，我們己經完成的一個新版本的開發，就可以將其發佈到這裡。
+Snapshots
+存放快照版的套件。例如，某新版本的開發在未完成所有的開發及測試之前是不能被發佈到Releases倉庫，
+但可能有其他的開發又需要用到此新版本的介面，所以有可能先將這些會被用到的介面測試完成後，就可以先被拿來使用，進而實現多個專案同時開發。
+3rd Party
+存放第三方套件。有些開源項目沒有採用Maven的方式來進行構建或是一些非開源的套件，可以通通存放在這裡。
+
+可以點擊左側畫面Repositories上方的Add按鈕，然後選擇Hosted
+Repository，然後在下方的配置畫面中輸入相關的資訊。本地倉庫有三種類型，需按自己的需求選擇建置。
+
+倉庫組(group)
+由於Nexus可以允許建立多個代理倉庫和本地倉庫，而為了方便使用這些倉庫，不要在引用這些倉庫時，需要逐一將其加入pom.xml
+或seting.xml中，所以有了倉庫組的概念，利用倉庫組的概念可以將倉庫按不同的目的進行群組，例如，常用的分成一組，有訪問權限的分成另一組，
+需要使用時，直接宣告指定的倉庫組即可。
+
+Nexus預設了2個倉庫組，分別是public repository和public snapshot repository
+public repository 預設包含了本地倉庫的Releases，Snapshots，3rd Party
+以及代理倉庫的Maven
+Central。當然，在有需要的時候，仍然可以在Configuration配置增加其他倉庫到這個倉庫組。
+如果有需要的話，也可以自行定義倉庫組，
+Add->Repository Group，填入ID，name等相關訊息後，右側Available
+Repositories欄裡可以選擇所要增加的倉庫到新建立的倉庫組之中。
+
+
+
+                      
+3r party：策略为Release，用来部署无法从中央仓库获得第三方发布构建版本。
 apache snapshots：策略为snapshot（快照版本，可理解为开发中的版本）代理仓库，用来代理apache snapshots仓库的快照版本。
 codehaus snapshots：这是一个策略为snapshot的代理仓库，用来代理codehaus maven仓库快照版本的构建。
 public Repositories：该仓库将上述所有策略为Release的仓库聚合并通过一致的地址提供服务。
@@ -243,9 +279,9 @@ test_maven：是自己创建的仓库。（可以先略过）
 
                                     ┌─────────────────────┐  
                                     │---------------------│─┐ 
-             ┌────────────────────＞│ 宿主(hosted)倉庫 A  │-│
+             ┌────────────────────＞│ 本地(hosted)倉庫 A  │-│
              │                      └─┬───────────────────┘ │
-┌───────┐    │			╔═══＞│ 宿主(hosted)倉庫 B  │
+┌───────┐    │			╔═══＞│ 本地(hosted)倉庫 B  │
 │       ├────┘    ╔════════╗    ║     └─────────────────────┘ 
 │       │         ║        ╠════╝
 │ Maven ├──────＞ ║ 倉庫組 ║
